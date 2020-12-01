@@ -107,7 +107,6 @@ inline DSTexture2D* CreateDepthStencil(UINT Width, UINT Height)
 	ResultLog(Result, "RTTexture2D");
 
 	GenerateDSVFromDSTexture2D(Resource->RawTexture.Get(), Resource->DSV.GetAddressOf());
-	//GenerateSRVFromRTTexture2D(Resource->RawTexture.Get(), Resource->SRV.GetAddressOf());
 
 	return Resource;
 }

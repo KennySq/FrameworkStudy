@@ -1,12 +1,15 @@
 #include "stdafx.h"
 #include "Application.h"
 
-shared_ptr<Application> Application::Instance = nullptr;
+shared_ptr<Application> Application::Inst = nullptr;
 
 bool Application::Init()
 {
 	Hardware = &D3DHardware::GetInstance(WindowHandle);
 	Renderer = &ImmediateRenderer::GetInstance();
+	auto Memory = MemoryBank::GetInstance();
+
+	Memory->RegisterComponent<MeshRenderer>();
 
 	if (!Hardware || !Renderer)
 		AssertCritical("Hardware or Renderer didn't initialized!", E_INVALIDARG);
