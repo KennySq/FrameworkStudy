@@ -2,7 +2,7 @@
 class Application
 {
 private:
-	static shared_ptr<Application> Instance;
+	static shared_ptr<Application> Inst;
 
 	D3DHardware* Hardware = nullptr;
 	ImmediateRenderer* Renderer = nullptr;
@@ -19,10 +19,10 @@ public:
 
 	static inline Application& GetInstance(HWND hWnd = nullptr)
 	{
-		if (!Instance)
-			Instance = make_shared<Application>(hWnd);
+		if (!Inst)
+			Inst = make_shared<Application>(hWnd);
 
-		return *Instance;
+		return *Inst;
 	}
 
 	Application(HWND hWnd) { Width = 800; Height = 600; WindowHandle = hWnd; }

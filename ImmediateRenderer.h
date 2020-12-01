@@ -58,7 +58,6 @@ public:
 	inline RTTexture2D** const GetTextures2D() { return Textures2D.data(); }
 	inline RTTexture3D** const GetTextures3D() { return Textures3D.data(); }
 
-
 	inline void SwapFrame() { SwapChain->Present(0, 0); }
 
 

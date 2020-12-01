@@ -50,7 +50,23 @@
 
 #include"ImmediateRenderer.h"
 
+// Primitives
+#include"Mesh.h"
+#include"Model.h"
+#include"Shader.h"
+#include"Material.h"
+
+#include"HLSLCompiler.h"
+
+
+// Components
+#include"Component.h"
+#include"MeshRenderer.h"
+
+
+
 // Engine Resources
+
 #include"Instance.h"
 #include"Scene.h"
 

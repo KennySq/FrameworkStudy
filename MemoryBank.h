@@ -8,10 +8,46 @@ private:
 
 	unordered_map<size_t, string> StringMap;
 	unordered_map<size_t, Scene*> SceneMap;
+	unordered_map<size_t, string> ComponentMap;
 
 public:
 	MemoryBank();
 	~MemoryBank();
+
+	template<class _Ty>
+	inline void RegisterComponent()
+	{
+		auto CID = typeid(_Ty).hash_code();
+		if (ComponentMap.find(CID) != ComponentMap.end())
+		{
+			char buffer[128];
+			itoa(CID, buffer, 128);
+			DebugLog(L_WARNING, string(buffer) + " => is alreay exist.");
+			return;
+		}
+
+		ComponentMap.insert_or_assign(CID, typeid(_Ty).name());
+	}
+
+	inline bool FindComponent(size_t CID)
+	{
+		if (ComponentMap.find(CID) != ComponentMap.end())
+			return true;
+
+		DebugLog(L_WARNING, "There is no such component id.");
+
+		return false;
+	}
+
+	inline string FindComponentName(size_t CID)
+	{
+		if (ComponentMap.find(CID) != ComponentMap.end())
+			return ComponentMap[CID];
+
+		DebugLog(L_WARNING, "There is no such component id.");
+
+		return "";
+	}
 
 	inline void AddScene(Scene* Scen)
 	{
@@ -33,6 +69,6 @@ public:
 			StringMap.insert_or_assign(Key, String);
 	}
 
-	static MemoryBank& GetInstance() { if (!Instance) Instance = make_shared<MemoryBank>(); return *Instance; }
+	static MemoryBank* const GetInstance() { if (!Instance) Instance = make_shared<MemoryBank>(); return &*Instance; }
 };
 
