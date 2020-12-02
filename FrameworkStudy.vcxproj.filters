@@ -90,6 +90,9 @@
     <ClInclude Include="Shader.h">
       <Filter>헤더 파일\Private</Filter>
     </ClInclude>
+    <ClInclude Include="ModelLoader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>소스 파일\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelLoader.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
