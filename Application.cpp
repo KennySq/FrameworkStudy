@@ -24,6 +24,18 @@ bool Application::Init()
 	// Clear Swapchain buffer
 	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Aqua);
 
+	Renderer->AddViewport(CD3D11_VIEWPORT(0.0f, 0.0f, Width, Height));
+	auto SceneID = Memory->AddScene(new Scene());
+	Scene* SelectedScene = Memory->GetScene(SceneID);
+
+	auto InstanceID = SelectedScene->AddInstance(new Instance());
+	Instance* SelectedInst = SelectedScene->FindInstanceWithIID(InstanceID);
+
+	SelectedInst->AddComponent<MeshRenderer>();
+	auto MR = SelectedInst->GetComponent<MeshRenderer>();
+	
+	//MR->SetModel()
+
 	return true;
 }
 

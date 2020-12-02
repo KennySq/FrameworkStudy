@@ -49,7 +49,7 @@ public:
 		return "";
 	}
 
-	inline void AddScene(Scene* Scen)
+	inline size_t AddScene(Scene* Scen)
 	{
 		if (!Scen)
 		{
@@ -57,8 +57,20 @@ public:
 			return;
 		}
 		
+		auto ID = make_hash<Scene*>(Scen);
+		SceneMap.insert_or_assign(ID, Scen);
 
-		SceneMap.insert_or_assign(make_hash<Scene*>(Scen), Scen);
+		return ID;
+	}
+
+	inline Scene* const GetScene(size_t ID)
+	{
+		if (SceneMap.find(ID) != SceneMap.end())
+			return SceneMap[ID];
+
+		DebugLog(L_WARNING, to_string(ID) + " does not exist.");
+
+		return nullptr;
 	}
 
 	inline void AddString(string String)

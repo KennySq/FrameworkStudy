@@ -29,6 +29,18 @@ public:
 	}
 
 	template<class _Ty>
+	inline _Ty* const GetComponent()
+	{
+		auto CID = typeid(_Ty).hash_code();
+		if (Components.find(CID) != Components.end())
+			return (_Ty*)Components[CID];
+
+		DebugLog(L_ERROR, to_string(typeid(_Ty).name()) + " does not exist.");
+
+		return nullptr;
+	}
+
+	template<class _Ty>
 	inline void RemoveComponent()
 	{
 		if (!Components.find(typeid(_Ty).hash_code()))
