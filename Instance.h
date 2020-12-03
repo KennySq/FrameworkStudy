@@ -35,7 +35,7 @@ public:
 		if (Components.find(CID) != Components.end())
 			return (_Ty*)Components[CID];
 
-		DebugLog(L_ERROR, to_string(typeid(_Ty).name()) + " does not exist.");
+		DebugLog(L_ERROR, typeid(_Ty).name() + string(" does not exist."));
 
 		return nullptr;
 	}

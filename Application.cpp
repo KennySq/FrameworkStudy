@@ -34,6 +34,10 @@ bool Application::Init()
 	SelectedInst->AddComponent<MeshRenderer>();
 	auto MR = SelectedInst->GetComponent<MeshRenderer>();
 	
+	Model* M = new Model();
+	
+	LoadStaticModelFromFile("Assets/Skull/SkullV.obj", M);
+
 	//MR->SetModel()
 
 	return true;

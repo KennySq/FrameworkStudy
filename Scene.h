@@ -12,7 +12,7 @@ public:
 		if (!Inst)
 		{
 			MessageBox(nullptr, L"This instance is not initialized!", 0, 0);
-			return;
+			return NULL;
 		}
 
 		auto IID = make_hash<Instance*>(Inst);

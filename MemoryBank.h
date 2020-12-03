@@ -54,7 +54,7 @@ public:
 		if (!Scen)
 		{
 			MessageBox(nullptr, L"This scene is not initialized!", 0, 0);
-			return;
+			return NULL;
 		}
 		
 		auto ID = make_hash<Scene*>(Scen);

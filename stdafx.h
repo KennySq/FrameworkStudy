@@ -57,6 +57,8 @@
 #include"Shader.h"
 #include"Material.h"
 
+#include"ModelLoader.h"
+
 #include"HLSLCompiler.h"
 
 
