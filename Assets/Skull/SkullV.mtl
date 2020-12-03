@@ -1,0 +1,14 @@
+# File produced by Open Asset Import Library (http://www.assimp.sf.net)
+# (assimp v3.1.68452469)
+
+newmtl 1001
+kd 1 1 1
+ka 1 1 1
+ks 0.117 0.117 0.117
+ke 0 0 0
+d 1
+Ns 96
+illum 2
+map_kd Skull.jpg
+map_ka Skull.jpg
+
