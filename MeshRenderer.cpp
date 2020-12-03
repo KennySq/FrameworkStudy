@@ -10,17 +10,36 @@ void MeshRenderer::Init()
 
 void MeshRenderer::Update()
 {
-
 	static auto Context = D3DHardware::GetInstance().GetContext();
 	static auto RootScene = Root->GetScene();
 	static auto Camera = RootScene->GetMainCamera();
 
-	ID3D11Buffer* ConstantBuffers[] = { Camera->GetBuffer().Get() };
+	static auto TransformComp = Root->GetComponent<Transform>();
+	static auto TRSBuffer = TransformComp->GetBuffer();
+	static auto LightBuffer = RootScene->GetLightBuffer();
+	static auto CameraBuffer = Camera->GetBuffer();
 
-	//for(int i=0;i<)
+	static UINT Strides[] = { sizeof(StaticVertex) };
+	static UINT Offsets[] = { 0 };
+
+	static D3D11_BUFFER_DESC IndexDesc{};
+	static UINT IndexCount;
+
+	ID3D11Buffer* ConstantBuffers[] = {  TRSBuffer, CameraBuffer.Get(), LightBuffer };
+
 	Context->VSSetShader(Materials[0]->Passes[0]->VS.Get(), nullptr, 0);
 	Context->PSSetShader(Materials[0]->Passes[0]->PS.Get(), nullptr, 0);
-	Context->VSSetConstantBuffers()
+	Context->VSSetConstantBuffers(0, 3, ConstantBuffers);
+	Context->PSSetConstantBuffers(0, 3, ConstantBuffers);
+	Context->IASetInputLayout(Materials[0]->Passes[0]->IL.Get());
+
+	Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Context->IASetVertexBuffers(0, 1, RenderModel->VertexBuffer.GetAddressOf(), Strides, Offsets);
+	Context->IASetIndexBuffer(RenderModel->IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+	RenderModel->IndexBuffer.Get()->GetDesc(&IndexDesc);
+	
+	Context->DrawIndexed(IndexDesc.ByteWidth / sizeof(StaticVertex), 0, 0);
 }
 
 void MeshRenderer::Release()

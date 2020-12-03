@@ -191,8 +191,8 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Assets\Shaders\SampleShader.hlsl">
+    <None Include="Assets\Shaders\SampleShader.hlsl">
       <Filter>리소스 파일\Shaders</Filter>
-    </FxCompile>
+    </None>
   </ItemGroup>
 </Project>

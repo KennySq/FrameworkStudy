@@ -11,9 +11,11 @@ class Instance;
 class Component : public IComponent
 {
 protected:
-	Instance* Root;
+
 
 	size_t ComponentID;
 	string ComponentName;
 
+public:
+	Instance* Root;
 };

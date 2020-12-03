@@ -11,6 +11,7 @@ bool Application::Init()
 
 	Memory->RegisterComponent<MeshRenderer>();
 	Memory->RegisterComponent<Camera>();
+	Memory->RegisterComponent<Transform>();
 
 	if (!Hardware || !Renderer)
 		AssertCritical("Hardware or Renderer didn't initialized!", E_INVALIDARG);
@@ -36,17 +37,24 @@ bool Application::Init()
 	Instance* CameraInst = SelectedScene->FindInstanceWithIID(CameraID);
 
 	SelectedInst->AddComponent<MeshRenderer>();
+	SelectedInst->AddComponent<Transform>();
 	CameraInst->AddComponent<Camera>();
 	
 	auto MR = SelectedInst->GetComponent<MeshRenderer>();
 	
 	Model* M = new Model();
-	
+	Material* Mat = new Material();
+
+	Mat->AddPass("Assets/Shaders/SampleShader.hlsl", "Sample");
+	Memory->AddMaterial(Mat);
+	MR->Materials.emplace_back(Mat);
+
 	LoadStaticModelFromFile("Assets/Skull/SkullV.obj", M);
+	MR->SetModel(M);
+
 
 	SelectedScene->AddSpotLight(XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f));
 
-	MR->SetModel(M);
 
 	return true;
 }
@@ -63,5 +71,5 @@ void Application::Render()
 
 void Application::Release()
 {
-
+	
 }

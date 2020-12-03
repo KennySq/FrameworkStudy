@@ -63,6 +63,8 @@ public:
 	inline void SetMainCamera(Camera* const Cam) { MainCamera = Cam; }
 	inline Camera* const GetMainCamera() { return MainCamera; }
 
+	inline ID3D11Buffer* const GetLightBuffer() { return LightBuffer.Get(); }
+
 	void Update(float Delta);
 
 };

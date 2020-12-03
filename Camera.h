@@ -10,8 +10,8 @@ class Camera : Component
 	ComPtr<ID3D11Buffer> CameraBuffer;
 
 public:
-	inline constexpr XMMATRIX GetView() { return XMLoadFloat4x4(&View); }
-	inline constexpr XMMATRIX GetProjection() { return XMLoadFloat4x4(&Projection); }
+	inline const XMMATRIX GetView() { return XMLoadFloat4x4(&View); }
+	inline const XMMATRIX GetProjection() { return XMLoadFloat4x4(&Projection); }
 
 	inline void SetView(XMMATRIX const Mat) { XMStoreFloat4x4(&View, Mat); }
 	inline void SetProjection(XMMATRIX const Mat) { XMStoreFloat4x4(&Projection, Mat); }

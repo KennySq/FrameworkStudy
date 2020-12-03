@@ -1,6 +1,7 @@
 #pragma once
 using namespace std;
 
+class Scene;
 class MemoryBank
 {
 private:
@@ -9,6 +10,8 @@ private:
 	unordered_map<size_t, string> StringMap;
 	unordered_map<size_t, Scene*> SceneMap;
 	unordered_map<size_t, string> ComponentMap;
+
+	vector<Material*> MaterialCache;
 
 public:
 	MemoryBank();
@@ -81,6 +84,26 @@ public:
 			StringMap.insert_or_assign(Key, String);
 	}
 
+	inline void AddMaterial(Material* Mat)
+	{
+		if (!Mat)
+		{
+			DebugLog(L_ERROR, "This material pointer was invalid");
+			return;
+		}
+		MaterialCache.emplace_back(Mat);
+	}
+
+	inline Material* const GetMaterial(UINT Index)
+	{
+		if (Index >= MaterialCache.size() && Index < 0)
+		{
+			DebugLog(L_ERROR, "Index out of range.");
+			return nullptr;
+		}
+
+		return MaterialCache[Index];
+	}
+
 	static MemoryBank* const GetInstance() { if (!Instance) Instance = make_shared<MemoryBank>(); return &*Instance; }
 };
-

@@ -66,16 +66,15 @@
 
 // Components
 #include"Component.h"
+
 #include"MeshRenderer.h"
 #include"Camera.h"
-
-
+#include"Transform.h"
 
 // Engine Resources
+#include"MemoryBank.h"
 
 #include"Instance.h"
 #include"Scene.h"
-
-#include"MemoryBank.h"
 
 #include"Application.h"

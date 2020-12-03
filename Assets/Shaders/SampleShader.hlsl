@@ -16,13 +16,13 @@ cbuffer Instance : register(b0)
 {
     matrix World;
     
-}
+};
 
 cbuffer Transform : register(b1)
 {
-    row_major matrix View;
-    row_major matrix Projection;
-}
+    matrix View;
+    matrix Projection;
+};
 
 cbuffer Scene : register(b2)
 {
@@ -31,7 +31,9 @@ cbuffer Scene : register(b2)
     
     uint DirectionalCount;
     uint SpotCount;
-}
+    uint Padding;
+    uint Padding2;
+};
 
 struct Vertex
 {
@@ -49,7 +51,7 @@ struct VTP
 
 VTP SampleVS(Vertex Input)
 {
-    VTP Output = (VTP) 0;
+    VTP Output = (VTP)0;
     
     Output.Position = mul(Input.Position, World);
     Output.Position = mul(Output.Position, View);
@@ -92,9 +94,9 @@ float4 SamplePS(VTP Input) : SV_Target0
         Diffuse = DirectionalDiffuse(DirectionalLights[i].Direction, Input.Normal);
     }
     
-    for (unsigned int i = 0; i < SpotCount; i++)
+    for (unsigned int j = 0; j < SpotCount; j++)
     {
-        Diffuse += SpotDiffuse(SpotLights[i], Input.Position, Input.Normal);
+        Diffuse += SpotDiffuse(SpotLights[j], Input.Position, Input.Normal);
     }
     
     return Diffuse.xxxx;

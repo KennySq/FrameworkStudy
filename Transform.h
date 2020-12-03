@@ -1,5 +1,10 @@
 #pragma once
 
+struct InstanceData
+{
+	XMFLOAT4X4 WorldTransform;
+};
+
 struct Transform : Component
 {
 private:
@@ -9,11 +14,22 @@ private:
 	XMFLOAT4 Rotation;
 	XMFLOAT4 Scale;
 
+	ComPtr<ID3D11Buffer> TRSBuffer;
+
 public:
-	XMMATRIX const GetMatrix() { return XMLoadFloat4x4(&TRS); }
+	inline XMMATRIX const GetMatrix() { return XMLoadFloat4x4(&TRS); }
 	
-	XMVECTOR const GetPosition() { return XMLoadFloat4(&Position); }
-	XMVECTOR const GetRotation() { return XMLoadFloat4(&Rotation); }
-	XMVECTOR const GetScale() { return XMLoadFloat4(&Scale); }
+	inline XMVECTOR const GetPosition() { return XMLoadFloat4(&Position); }
+	inline XMVECTOR const GetRotation() { return XMLoadFloat4(&Rotation); }
+	inline XMVECTOR const GetScale() { return XMLoadFloat4(&Scale); }
+
+	inline ID3D11Buffer* const GetBuffer() { return TRSBuffer.Get(); }
+
+	void Translation(XMVECTOR Vector);
+
+	// Component을(를) 통해 상속됨
+	virtual void Init() override;
+	virtual void Update() override;
+	virtual void Release() override;
 
 };
