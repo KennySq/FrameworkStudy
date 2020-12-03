@@ -7,9 +7,12 @@ struct IComponent
 	virtual void Release() = 0;
 };
 
+class Instance;
 class Component : public IComponent
 {
 protected:
+	Instance* Root;
+
 	size_t ComponentID;
 	string ComponentName;
 

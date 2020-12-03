@@ -57,6 +57,8 @@
 #include"Shader.h"
 #include"Material.h"
 
+#include"Lights.h"
+
 #include"ModelLoader.h"
 
 #include"HLSLCompiler.h"
@@ -65,6 +67,7 @@
 // Components
 #include"Component.h"
 #include"MeshRenderer.h"
+#include"Camera.h"
 
 
 
