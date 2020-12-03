@@ -25,6 +25,9 @@
     <Filter Include="헤더 파일\Private">
       <UniqueIdentifier>{ce10a60c-6f67-49d8-83fa-cf2612c4b4e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="리소스 파일\Shaders">
+      <UniqueIdentifier>{6cdcd2cf-9edb-4bf7-bbcb-e2447c22653e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -90,8 +93,17 @@
     <ClInclude Include="Shader.h">
       <Filter>헤더 파일\Private</Filter>
     </ClInclude>
+    <ClInclude Include="Lights.h">
+      <Filter>헤더 파일\Private</Filter>
+    </ClInclude>
     <ClInclude Include="ModelLoader.h">
+      <Filter>헤더 파일\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>리소스 파일\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +164,16 @@
     <ClCompile Include="Shader.cpp">
       <Filter>소스 파일\Private</Filter>
     </ClCompile>
+    <ClCompile Include="Lights.cpp">
+      <Filter>소스 파일\Private</Filter>
+    </ClCompile>
     <ClCompile Include="ModelLoader.cpp">
+      <Filter>소스 파일\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -168,5 +189,10 @@
     <Image Include="ComputeShader.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Assets\Shaders\SampleShader.hlsl">
+      <Filter>리소스 파일\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -12,6 +12,8 @@ private:
 	UINT Width;
 	UINT Height;
 
+	Scene* SelectedScene = nullptr;
+
 private:
 
 
