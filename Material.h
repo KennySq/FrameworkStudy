@@ -13,8 +13,8 @@ struct Material
 	
 	inline void AddPass(string Path, string PassName)
 	{
-		shared_ptr<Pass> NewPass = make_shared<Pass>();
-		auto Result = CompilePassFromFile(Path, PassName, &*NewPass);
+		Pass* NewPass = new Pass();
+		auto Result = CompilePassFromFile(Path, PassName, NewPass);
 
 		if (Result != S_OK)
 		{
@@ -22,7 +22,7 @@ struct Material
 			return;
 		}
 
-		Passes.insert_or_assign(Path, &*NewPass);
+		Passes.insert_or_assign(PassName, NewPass);
 
 		return;
 	}

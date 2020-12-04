@@ -30,6 +30,7 @@ public:
 	
 	
 	virtual void ClearTexture(RTTexture2D * Target, XMVECTORF32 ClearColor) override;
+	void ClearDepthStencil(DSTexture2D* Target);
 
 	RTTexture2D* GetBufferFromSwapChain();
 
@@ -59,6 +60,8 @@ public:
 
 	inline RTTexture2D** const GetTextures2D() { return Textures2D.data(); }
 	inline RTTexture3D** const GetTextures3D() { return Textures3D.data(); }
+
+	inline DSTexture2D** const GetDepthStencils() { return Depths.data(); }
 
 	inline void AddViewport(D3D11_VIEWPORT Viewport) { Viewports.emplace_back(Viewport); Context->RSSetViewports(Viewports.size(), Viewports.data()); }
 	inline void RemoveViewport(UINT Index) { Viewports.erase(Viewports.begin() + Index); }

@@ -17,6 +17,7 @@ void Transform::Init()
 {
 	D3D11_BUFFER_DESC Desc{};
 	auto Device = D3DHardware::GetInstance().GetDevice();
+	auto Context = D3DHardware::GetInstance().GetContext();
 
 	Desc.ByteWidth = sizeof(InstanceData);
 	Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -24,6 +25,10 @@ void Transform::Init()
 
 	auto Result = Device->CreateBuffer(&Desc, nullptr, TRSBuffer.GetAddressOf());
 	ResultLog(Result, "Creating transform buffer.");
+
+	XMStoreFloat4x4(&TRS, XMMatrixIdentity());
+
+	Context->UpdateSubresource(TRSBuffer.Get(), 0, nullptr, &TRS, 0, 0);
 
 	return;
 }

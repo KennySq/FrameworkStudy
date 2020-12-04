@@ -80,7 +80,7 @@ HRESULT CompileVS(string Path, string Entry, ID3D11VertexShader** ppVS, ID3D11In
 #endif
 
 	ID3DBlob* VBlob = nullptr, *ErrBlob = nullptr;
-	ID3D11ShaderReflection** ppReflection;
+	ID3D11ShaderReflection* pReflection;
 
 	auto Result = D3DCompileFromFile(A2W(Path.c_str()), nullptr, nullptr, (Entry + "VS").c_str(), "vs_5_0", Flag, 0, &VBlob, &ErrBlob);
 	ResultLog(Result, Path + " => Compiling HLSL file.");
@@ -88,7 +88,7 @@ HRESULT CompileVS(string Path, string Entry, ID3D11VertexShader** ppVS, ID3D11In
 	Result = Device->CreateVertexShader(VBlob->GetBufferPointer(), VBlob->GetBufferSize(), nullptr, ppVS);
 	ResultLog(Result, Path + " => Creating a vertex shader.");
 
-	Result = ReflectShader(VBlob, ppIL, ppReflection);
+	Result = ReflectShader(VBlob, ppIL, &pReflection);
 
 	return Result;
 

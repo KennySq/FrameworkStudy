@@ -11,6 +11,12 @@ void ImmediateRenderer::ClearTexture(RTTexture2D * Target, XMVECTORF32 ClearColo
 	Context->ClearRenderTargetView(Target->RTV.Get(), ClearColor);
 }
 
+void ImmediateRenderer::ClearDepthStencil(DSTexture2D * Target)
+{
+	Context->ClearDepthStencilView(Target->DSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+}
+
 RTTexture2D* ImmediateRenderer::GetBufferFromSwapChain()
 {
 	RTTexture2D* Texture = new RTTexture2D();

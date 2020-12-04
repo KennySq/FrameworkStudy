@@ -27,11 +27,11 @@ void MeshRenderer::Update()
 
 	ID3D11Buffer* ConstantBuffers[] = {  TRSBuffer, CameraBuffer.Get(), LightBuffer };
 
-	Context->VSSetShader(Materials[0]->Passes[0]->VS.Get(), nullptr, 0);
-	Context->PSSetShader(Materials[0]->Passes[0]->PS.Get(), nullptr, 0);
+	Context->VSSetShader(Materials[0]->Passes["Sample"]->VS.Get(), nullptr, 0);
+	Context->PSSetShader(Materials[0]->Passes["Sample"]->PS.Get(), nullptr, 0);
 	Context->VSSetConstantBuffers(0, 3, ConstantBuffers);
 	Context->PSSetConstantBuffers(0, 3, ConstantBuffers);
-	Context->IASetInputLayout(Materials[0]->Passes[0]->IL.Get());
+	Context->IASetInputLayout(Materials[0]->Passes["Sample"]->IL.Get());
 
 	Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	Context->IASetVertexBuffers(0, 1, RenderModel->VertexBuffer.GetAddressOf(), Strides, Offsets);
@@ -39,7 +39,7 @@ void MeshRenderer::Update()
 
 	RenderModel->IndexBuffer.Get()->GetDesc(&IndexDesc);
 	
-	Context->DrawIndexed(IndexDesc.ByteWidth / sizeof(StaticVertex), 0, 0);
+	Context->DrawIndexed(IndexDesc.ByteWidth / sizeof(unsigned int), 0, 0);
 }
 
 void MeshRenderer::Release()

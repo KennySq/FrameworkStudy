@@ -25,6 +25,8 @@ bool Application::Init()
 
 	// Clear Swapchain buffer
 	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Aqua);
+	Renderer->ClearDepthStencil(Renderer->GetDepthStencils()[0]);
+	Renderer->SetRenderTarget(Renderer->GetTextures2D(), 1, Renderer->GetDepthStencils()[0]);
 
 	Renderer->AddViewport(CD3D11_VIEWPORT(0.0f, 0.0f, Width, Height));
 	auto SceneID = Memory->AddScene(new Scene());
@@ -45,6 +47,7 @@ bool Application::Init()
 	Model* M = new Model();
 	Material* Mat = new Material();
 
+
 	Mat->AddPass("Assets/Shaders/SampleShader.hlsl", "Sample");
 	Memory->AddMaterial(Mat);
 	MR->Materials.emplace_back(Mat);
@@ -53,7 +56,7 @@ bool Application::Init()
 	MR->SetModel(M);
 
 
-	SelectedScene->AddSpotLight(XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f));
+	SelectedScene->AddSpotLight(XMVectorSet(0.0f, 10.0f, 0.0f, 10.0f));
 
 
 	return true;
@@ -61,6 +64,10 @@ bool Application::Init()
 
 void Application::Update()
 {
+
+	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Aqua);
+	Renderer->ClearDepthStencil(Renderer->GetDepthStencils()[0]);
+
 	SelectedScene->Update(0.0f);
 }
 

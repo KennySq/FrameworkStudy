@@ -9,6 +9,8 @@ struct SceneLight
 
 	unsigned int DirectionalCount = 0;
 	unsigned int SpotCount = 0;
+	unsigned int Padding;
+	unsigned int Padding2;
 };
 
 class Scene

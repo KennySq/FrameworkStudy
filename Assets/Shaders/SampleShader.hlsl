@@ -53,7 +53,10 @@ VTP SampleVS(Vertex Input)
 {
     VTP Output = (VTP)0;
     
-    Output.Position = mul(Input.Position, World);
+    Output.Position = Input.Position;
+    Output.Position.w = 1.0f;
+    
+    Output.Position = mul(Output.Position, World);
     Output.Position = mul(Output.Position, View);
     Output.Position = mul(Output.Position, Projection);
     
@@ -91,7 +94,7 @@ float4 SamplePS(VTP Input) : SV_Target0
     
     for (unsigned int i = 0; i < DirectionalCount; i++)
     {
-        Diffuse = DirectionalDiffuse(DirectionalLights[i].Direction, Input.Normal);
+        Diffuse = DirectionalDiffuse(DirectionalLights[i], Input.Normal);
     }
     
     for (unsigned int j = 0; j < SpotCount; j++)

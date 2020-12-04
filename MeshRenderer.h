@@ -4,7 +4,7 @@ class Component;
 struct MeshRenderer : public Component
 {
 	Model* RenderModel = nullptr; // None
-	vector<Material*> Materials;
+	std::vector<Material*> Materials;
 
 	inline void SetModel(Model* const Source)
 	{

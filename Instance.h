@@ -27,7 +27,7 @@ public:
 			return;
 		}
 
-		shared_ptr<_Ty> Comp = make_shared<_Ty>();
+		_Ty* Comp = new _Ty();
 
 		auto CompPtr = ((Component*)&*Comp);
 
