@@ -35,6 +35,10 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
+#include"imgui/imgui.h"
+#include"imgui/imgui_impl_win32.h"
+#include"imgui/imgui_impl_dx11.h"
+
 // Utility
 #include"Utility.h"
 
@@ -76,5 +80,7 @@
 
 #include"Instance.h"
 #include"Scene.h"
+
+#include"ImGuiPresets.h"
 
 #include"Application.h"
