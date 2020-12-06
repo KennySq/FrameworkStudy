@@ -26,6 +26,7 @@ public:
 	inline ID3D11Buffer* const GetBuffer() { return TRSBuffer.Get(); }
 
 	void Translation(XMVECTOR Vector);
+	void Rotate(XMVECTOR Vector);
 
 	// Component을(를) 통해 상속됨
 	virtual void Init() override;

@@ -8,7 +8,7 @@ void Camera::Init()
 
 	auto Device = D3DHardware::GetInstance().GetDevice();
 
-	auto V = XMMatrixLookAtLH(XMVectorSet(20.0f, 20.0f, 0.0f, 1.0f),
+	auto V = XMMatrixLookAtLH(XMVectorSet(40.0f, 0.0f, 0.0f, 1.0f),
 							  XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f),
 							  XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f));
 

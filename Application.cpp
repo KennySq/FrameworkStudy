@@ -3,6 +3,17 @@
 
 shared_ptr<Application> Application::Inst = nullptr;
 
+void Application::InitImGui()
+{
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+
+	ImGuiIO& IO = ImGui::GetIO();
+	ImGui::StyleColorsDark();
+
+
+}
+
 bool Application::Init()
 {
 	Hardware = &D3DHardware::GetInstance(WindowHandle);
@@ -47,6 +58,7 @@ bool Application::Init()
 	Model* M = new Model();
 	Material* Mat = new Material();
 
+	SelectedInst->GetComponent<Transform>()->Rotate(XMVectorSet(90.0f, 0.0f, 0.0f, 1.0f));
 
 	Mat->AddPass("Assets/Shaders/SampleShader.hlsl", "Sample");
 	Memory->AddMaterial(Mat);
@@ -56,8 +68,18 @@ bool Application::Init()
 	MR->SetModel(M);
 
 
-	SelectedScene->AddSpotLight(XMVectorSet(0.0f, 10.0f, 0.0f, 10.0f));
+	SelectedScene->AddSpotLight(XMVectorSet(20.0f, 30.0f, 0.0f, 1.0f), 25.0f);
+	//SelectedScene->AddSpotLight(XMVectorSet(0.0f, 10.0f, 0.0f, 1.0f), 10.0f);
 
+	SelectedScene->AddDirectionalLight(
+		XMVector4Normalize(XMVectorSet(0.0f, 10.0f, 0.0f, 1.0f)
+						   - XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f)), 0.1f);
+
+	
+	InitImGui();
+	ImGui_ImplDX11_Init(Hardware->GetDevice(), Hardware->GetContext());
+
+	ImGui_ImplWin32_Init(WindowHandle);
 
 	return true;
 }
@@ -67,12 +89,28 @@ void Application::Update()
 
 	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Aqua);
 	Renderer->ClearDepthStencil(Renderer->GetDepthStencils()[0]);
+	
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	ImGui::Begin("Begin");
 
+	ImGui::Text("Hello ImGui");
+	
+	ImGui::End();
+	
+	//ImGui_InstanceViewer(SelectedScene->FindInstanceWithIID())
+	ImGui::EndFrame();
+	ImGui::Render();
+	
 	SelectedScene->Update(0.0f);
 }
 
 void Application::Render()
 {
+
+
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	Renderer->SwapFrame();
 }
 

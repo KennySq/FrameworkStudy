@@ -33,6 +33,8 @@ public:
 	UINT GetWidth() const { return Width; }
 	UINT GetHeight() const { return Height; }
 
+	void InitImGui();
+
 	bool Init();
 	void Update();
 	void Render();

@@ -45,8 +45,9 @@ struct Vertex
 struct VTP
 {
     float4 Position : SV_Position;
-    float4 Normal : TEXCOORD0;
-    float2 UV : TEXCOORD1;
+    float4 WorldPosition : TEXCOORD0;
+    float4 Normal : TEXCOORD1;
+    float2 UV : TEXCOORD2;
 };
 
 VTP SampleVS(Vertex Input)
@@ -57,6 +58,8 @@ VTP SampleVS(Vertex Input)
     Output.Position.w = 1.0f;
     
     Output.Position = mul(Output.Position, World);
+    Output.WorldPosition = Output.Position;
+    
     Output.Position = mul(Output.Position, View);
     Output.Position = mul(Output.Position, Projection);
     
@@ -64,7 +67,6 @@ VTP SampleVS(Vertex Input)
     Output.UV = Input.UV;
     
     return Output;
-
 }
 
 float DirectionalDiffuse(DirectionalLight Light, float4 Normal)
@@ -72,7 +74,7 @@ float DirectionalDiffuse(DirectionalLight Light, float4 Normal)
     Light.Direction = normalize(Light.Direction);
     Normal = normalize(Normal);
     
-    return saturate(dot(float4(Light.Direction, 1.0f), Normal));
+    return saturate(dot(float4(Light.Direction, 1.0f) * Light.Intensity, Normal));
 }
 
 float SpotDiffuse(SpotLight Light, float4 Position, float4 Normal)
@@ -82,7 +84,7 @@ float SpotDiffuse(SpotLight Light, float4 Position, float4 Normal)
  
     Normal = normalize(Normal);
     
-    return saturate(dot(LightDir, Normal) / Distance);
+    return saturate(dot(-LightDir, Normal) * (Light.Radius / Distance));
 
 }
 
@@ -94,12 +96,12 @@ float4 SamplePS(VTP Input) : SV_Target0
     
     for (unsigned int i = 0; i < DirectionalCount; i++)
     {
-        Diffuse = DirectionalDiffuse(DirectionalLights[i], Input.Normal);
+        Diffuse += DirectionalDiffuse(DirectionalLights[i], Input.Normal);
     }
     
     for (unsigned int j = 0; j < SpotCount; j++)
     {
-        Diffuse += SpotDiffuse(SpotLights[j], Input.Position, Input.Normal);
+        Diffuse += SpotDiffuse(SpotLights[j], Input.WorldPosition, Input.Normal);
     }
     
     return Diffuse.xxxx;
