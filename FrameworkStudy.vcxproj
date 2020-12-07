@@ -23,7 +23,7 @@
     <ProjectGuid>{D7152259-BEC0-4FDD-A279-9898F206FD33}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ComputeShader</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <ProjectName>FrameworkStudy</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -43,7 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -153,6 +153,9 @@
     <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="Hardware.h" />
     <ClInclude Include="HLSLCompiler.h" />
+    <None Include="HLSLMath.hlsl">
+      <FileType>Document</FileType>
+    </None>
     <ClInclude Include="ImGuiPresets.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />

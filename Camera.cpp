@@ -8,7 +8,7 @@ void Camera::Init()
 
 	auto Device = D3DHardware::GetInstance().GetDevice();
 
-	auto V = XMMatrixLookAtLH(XMVectorSet(40.0f, 0.0f, 0.0f, 1.0f),
+	auto V = XMMatrixLookAtLH(XMVectorSet(-40.0f, 0.0f, 0.0f, 1.0f),
 							  XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f),
 							  XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f));
 
@@ -18,12 +18,16 @@ void Camera::Init()
 	SetProjection(XMMatrixTranspose(P));
 
 	Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	Desc.ByteWidth = sizeof(XMFLOAT4X4) * 2;
+	Desc.ByteWidth = sizeof(CameraInfo);
 	Desc.Usage = D3D11_USAGE_DEFAULT;
 
-	XMMATRIX Mat[] = { XMMatrixTranspose(V),XMMatrixTranspose(P) };
+	CameraInfo Info;
+	
+	XMStoreFloat4x4(&Info.View, XMMatrixTranspose(V));
+	XMStoreFloat4x4(&Info.Projection, XMMatrixTranspose(P));
+	XMStoreFloat4(&Info.ViewPosition, GetViewPosition());
 
-	Sub.pSysMem = &Mat;
+	Sub.pSysMem = &Info;
 
 	auto Result = Device->CreateBuffer(&Desc, &Sub, GetBuffer().GetAddressOf());
 	ResultLog(Result, "Creating camera buffer");

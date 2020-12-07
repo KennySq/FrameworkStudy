@@ -1,3 +1,5 @@
+#include"HLSLMath.hlsl"
+
 SamplerState DefaultSampler : register(s0);
 
 struct DirectionalLight
@@ -22,6 +24,7 @@ cbuffer Transform : register(b1)
 {
     matrix View;
     matrix Projection;
+    float4 ViewPosition;
 };
 
 cbuffer Scene : register(b2)
@@ -87,6 +90,24 @@ float SpotDiffuse(SpotLight Light, float4 Position, float4 Normal)
     return saturate(dot(-LightDir, Normal) * (Light.Radius / Distance));
 
 }
+float Torrance(float Fresnel, float Diffuse, float4 Normal, float4 LightDir, float4 ViewPos, float4 Surface)
+{
+    float Ret = 0.0f;
+    
+    float4 ViewDir = normalize(ViewPos - Surface);
+
+    float Reflect = reflect(-LightDir, Normal);
+    float Coso, Cosi;
+    float ViewLight = dot(-LightDir, ViewDir);
+    
+    Coso = dot(-LightDir, Reflect);
+    Cosi = dot(-LightDir, Normal);
+    
+    Ret = (Fresnel * ViewLight) / (4 * Coso * Cosi);
+    //Fresnel * Diffuse 
+    
+    return Ret;
+}
 
 float4 SamplePS(VTP Input) : SV_Target0
 {
@@ -97,12 +118,23 @@ float4 SamplePS(VTP Input) : SV_Target0
     for (unsigned int i = 0; i < DirectionalCount; i++)
     {
         Diffuse += DirectionalDiffuse(DirectionalLights[i], Input.Normal);
+       // Diffuse += FDielct(float4(DirectionalLights[i].Direction, 1.0f),
+        //                     Input.Normal, 0.1f, 1.0f);
+       float Fr = FDielect(float4(DirectionalLights[i].Direction, 1.0f), Input.Normal, 0.1f, 1.0f);
+        
+        Diffuse += Torrance(Fr, Diffuse, Input.Normal, float4(DirectionalLights[i].Direction, 1.0f), ViewPosition, Input.WorldPosition);
+
     }
     
     for (unsigned int j = 0; j < SpotCount; j++)
     {
-        Diffuse += SpotDiffuse(SpotLights[j], Input.WorldPosition, Input.Normal);
+      //  Diffuse += SpotDiffuse(SpotLights[j], Input.WorldPosition, Input.Normal);
+     //   Diffuse += FDielct(float4(SpotLights[j].Position, 1.0f),
+     //                        Input.Normal, Input.WorldPosition, 1.0f, 1.0f);
+
     }
+    
+    
     
     return Diffuse.xxxx;
 }

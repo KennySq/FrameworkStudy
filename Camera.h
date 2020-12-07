@@ -1,5 +1,12 @@
 #pragma once
 
+struct CameraInfo
+{
+	XMFLOAT4X4 View;
+	XMFLOAT4X4 Projection;
+	XMFLOAT4 ViewPosition;
+};
+
 class Camera : Component
 {
 	XMFLOAT4X4 View;
@@ -12,6 +19,15 @@ class Camera : Component
 public:
 	inline const XMMATRIX GetView() { return XMLoadFloat4x4(&View); }
 	inline const XMMATRIX GetProjection() { return XMLoadFloat4x4(&Projection); }
+
+	inline const XMVECTOR GetViewPosition()
+	{
+		auto V = XMLoadFloat4x4(&View);
+		auto Dt = XMMatrixDeterminant(V);
+		auto Inv = XMMatrixInverse(&Dt, V);
+
+		return XMVectorSet(Inv.r[3].m128_f32[0], Inv.r[3].m128_f32[1], Inv.r[3].m128_f32[2], Inv.r[3].m128_f32[4]);
+	}
 
 	inline void SetView(XMMATRIX const Mat) { XMStoreFloat4x4(&View, Mat); }
 	inline void SetProjection(XMMATRIX const Mat) { XMStoreFloat4x4(&Projection, Mat); }

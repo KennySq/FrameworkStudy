@@ -82,7 +82,7 @@ HRESULT CompileVS(string Path, string Entry, ID3D11VertexShader** ppVS, ID3D11In
 	ID3DBlob* VBlob = nullptr, *ErrBlob = nullptr;
 	ID3D11ShaderReflection* pReflection;
 
-	auto Result = D3DCompileFromFile(A2W(Path.c_str()), nullptr, nullptr, (Entry + "VS").c_str(), "vs_5_0", Flag, 0, &VBlob, &ErrBlob);
+	auto Result = D3DCompileFromFile(A2W(Path.c_str()), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, (Entry + "VS").c_str(), "vs_5_0", Flag, 0, &VBlob, &ErrBlob);
 	ResultLog(Result, Path + " => Compiling HLSL file.");
 
 	Result = Device->CreateVertexShader(VBlob->GetBufferPointer(), VBlob->GetBufferSize(), nullptr, ppVS);
@@ -107,7 +107,7 @@ HRESULT CompilePS(string Path, string Entry, ID3D11PixelShader** ppPS)
 	ID3DBlob* PBlob = nullptr, *ErrBlob = nullptr;
 	ID3D11ShaderReflection** ppReflection;
 
-	auto Result = D3DCompileFromFile(A2W(Path.c_str()), nullptr, nullptr, (Entry + "PS").c_str(), "ps_5_0", Flag, 0, &PBlob, &ErrBlob);
+	auto Result = D3DCompileFromFile(A2W(Path.c_str()), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, (Entry + "PS").c_str(), "ps_5_0", Flag, 0, &PBlob, &ErrBlob);
 	ResultLog(Result, Path + " => Compiling HLSL file.");
 
 	Result = Device->CreatePixelShader(PBlob->GetBufferPointer(), PBlob->GetBufferSize(), nullptr, ppPS);
@@ -119,6 +119,8 @@ HRESULT CompilePS(string Path, string Entry, ID3D11PixelShader** ppPS)
 
 HRESULT CompilePassFromFile(string Path, string Entry, Pass* pPass)
 {
+
+
 	CompileVS(Path, Entry, pPass->VS.GetAddressOf(), pPass->IL.GetAddressOf());
 	CompilePS(Path, Entry, pPass->PS.GetAddressOf());
 
