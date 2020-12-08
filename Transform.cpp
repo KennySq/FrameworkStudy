@@ -7,7 +7,7 @@ void Transform::Translation(XMVECTOR Vector)
 
 	Origin *= XMMatrixTranslationFromVector(Vector);
 
-	XMStoreFloat4x4(&TRS, Origin);
+	XMStoreFloat4x4(&TRS, XMMatrixTranspose(Origin));
 
 	return;
 }
@@ -21,6 +21,35 @@ void Transform::Rotate(XMVECTOR Vector)
 	XMStoreFloat4x4(&TRS, Origin);
 
 	return;
+}
+
+void Transform::SetScale(XMVECTOR Vector)
+{
+	TRS._11 = Vector.m128_f32[0];
+	TRS._22 = Vector.m128_f32[1];
+	TRS._33 = Vector.m128_f32[2];
+}
+
+void Transform::SetScale(float x, float y, float z)
+{
+	TRS._11 = x;
+	TRS._22 = y;
+	TRS._33 = z;
+}
+
+void Transform::SetPosition(float x, float y, float z)
+{
+
+	TRS._41 = x;
+	TRS._42 = y;
+	TRS._43 = z;
+}
+
+void Transform::SetPosition(XMVECTOR Vector)
+{
+	TRS._41 = Vector.m128_f32[0];
+	TRS._42 = Vector.m128_f32[1];
+	TRS._43 = Vector.m128_f32[2];
 }
 
 

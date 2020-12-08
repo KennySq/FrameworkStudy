@@ -66,7 +66,7 @@ VTP SampleVS(Vertex Input)
     Output.Position = mul(Output.Position, View);
     Output.Position = mul(Output.Position, Projection);
     
-    Output.Normal = normalize(mul(float4(Input.Normal, 1.0f), World));
+    Output.Normal = normalize(float4(Input.Normal, 1.0f));
     Output.UV = Input.UV;
     
     return Output;

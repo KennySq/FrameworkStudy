@@ -27,7 +27,10 @@ public:
 
 	void Translation(XMVECTOR Vector);
 	void Rotate(XMVECTOR Vector);
-
+	void SetScale(XMVECTOR Vector);
+	void SetScale(float x, float y, float z);
+	void SetPosition(float x, float y, float z);
+	void SetPosition(XMVECTOR Vector);
 	// Component을(를) 통해 상속됨
 	virtual void Init() override;
 	virtual void Update() override;

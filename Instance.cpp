@@ -3,7 +3,9 @@
 
 
 Instance::Instance()
-{}
+{
+	SetName("GameObject");
+}
 
 
 Instance::~Instance()

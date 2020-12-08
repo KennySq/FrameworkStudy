@@ -42,6 +42,7 @@ bool Application::Init()
 	Renderer->AddViewport(CD3D11_VIEWPORT(0.0f, 0.0f, Width, Height));
 	auto SceneID = Memory->AddScene(new Scene());
 	SelectedScene = Memory->GetScene(SceneID);
+	SelectedScene->SetName("Testing Scene");
 
 	auto InstanceID = SelectedScene->AddInstance(new Instance());
 	auto CameraID = SelectedScene->AddInstance(new Instance());
@@ -58,6 +59,8 @@ bool Application::Init()
 	Model* M = new Model();
 	Material* Mat = new Material();
 
+	SelectedInst->GetComponent<Transform>()->Translation(XMVectorSet(50.0f, -10.0f, 0.0f, 1.0f));
+	SelectedInst->GetComponent<Transform>()->SetScale(4.0f, 4.0f, 4.0f);
 	SelectedInst->GetComponent<Transform>()->Rotate(XMVectorSet(90.0f, 0.0f, 0.0f, 1.0f));
 
 	Mat->AddPass("Assets/Shaders/SampleShader.hlsl", "Sample");
@@ -98,9 +101,16 @@ void Application::Update()
 	ImGui::Text("Hello ImGui");
 	
 	ImGui::End();
-	
+
+
+	//ImGui_TransformEditor()
 	//ImGui_InstanceViewer(SelectedScene->FindInstanceWithIID())
+	ImGui_SceneViewer(SelectedScene);
+	
+	
 	ImGui::EndFrame();
+	
+
 	ImGui::Render();
 	
 	SelectedScene->Update(0.0f);

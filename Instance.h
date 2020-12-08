@@ -17,7 +17,10 @@ public:
 	inline void SetScene(Scene* const pScene) { RootScene = pScene; }
 	inline Scene* const GetScene() { return RootScene; }
 
-	inline string* const GetName() { return &Name; }
+	inline void SetName(string& Str) { Name = Str; }
+	inline void SetName(const char* Str) { Name = Str; }
+
+	inline string& const GetName() { return Name; }
 	inline size_t const GetIID() { return IID; }
 
 	template<class _Ty>

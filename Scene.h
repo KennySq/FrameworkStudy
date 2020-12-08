@@ -19,6 +19,7 @@ private:
 	string SceneName;
 
 	unordered_map<size_t, Instance*> Instances;
+	vector<Instance*> InstanceVector;
 
 	vector<DirectionalLight> DirectionalLights;
 	vector<SpotLight> SpotLights;
@@ -32,6 +33,10 @@ public:
 	Scene();
 	~Scene();
 
+	inline void SetName(string& Str) { SceneName = Str; }
+	inline void SetName(const char* Str) { SceneName = Str; }
+	inline string& const GetSceneName() { return SceneName; }
+
 	inline size_t AddInstance(Instance* Inst) { 
 		if (!Inst)
 		{
@@ -43,6 +48,7 @@ public:
 
 		Inst->SetScene(this);
 		Instances.insert_or_assign(IID, Inst);
+		InstanceVector.emplace_back(Inst);
 		
 		return IID;
 	}
@@ -56,6 +62,10 @@ public:
 	
 		return nullptr;
 	}
+
+	inline size_t GetInstanceCount() { return Instances.size(); }
+
+	inline Instance** const GetInstancs() { return InstanceVector.data(); }
 
 	void UpdateLights();
 
