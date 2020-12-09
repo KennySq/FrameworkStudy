@@ -1,6 +1,31 @@
 #include"stdafx.h"
 #include"Camera.h"
 
+void Camera::Translation(XMVECTOR Vector)
+{
+	auto Origin = GetView();
+
+
+	Origin *= XMMatrixTranspose(XMMatrixTranslationFromVector(Vector));
+
+	XMStoreFloat4x4(&TRS, Origin);
+}
+
+void Camera::Rotate(XMVECTOR Vector)
+{}
+
+void Camera::SetScale(XMVECTOR Vector)
+{}
+
+void Camera::SetScale(float x, float y, float z)
+{}
+
+void Camera::SetPosition(float x, float y, float z)
+{}
+
+void Camera::SetPosition(XMVECTOR Vector)
+{}
+
 void Camera::Init()
 {
 	D3D11_BUFFER_DESC Desc{};
@@ -40,7 +65,18 @@ void Camera::Init()
 }
 
 void Camera::Update()
-{}
+{
+	static auto Context = D3DHardware::GetInstance().GetContext();
+
+	CameraInfo Info;
+
+	Info.View = TRS;
+	XMStoreFloat4x4(&Info.Projection, GetProjection());
+	XMStoreFloat4(&Info.ViewPosition, GetViewPosition());
+
+	Context->UpdateSubresource(CameraBuffer.Get(), 0, nullptr, &Info, 0, 0);
+
+}
 
 void Camera::Release()
 {}

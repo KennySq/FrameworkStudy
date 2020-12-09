@@ -41,7 +41,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg = MSG();
 
-    Application* App = &Application::GetInstance(hWnd);
+    Application* App = &Application::GetInstance(hWnd, hInst);
 
 	AllocConsole();
     App->Init();

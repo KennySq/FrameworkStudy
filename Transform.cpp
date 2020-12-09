@@ -16,8 +16,8 @@ void Transform::Rotate(XMVECTOR Vector)
 {
 	auto Origin = XMLoadFloat4x4(&TRS);
 
-	Origin *= XMMatrixRotationRollPitchYawFromVector(Vector);
-
+	Origin *= XMMatrixTranspose(XMMatrixRotationRollPitchYaw(Vector.m128_f32[1], Vector.m128_f32[2], Vector.m128_f32[0]));
+	
 	XMStoreFloat4x4(&TRS, Origin);
 
 	return;

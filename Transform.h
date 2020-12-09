@@ -7,7 +7,7 @@ struct InstanceData
 
 struct Transform : Component
 {
-private:
+protected:
 	XMFLOAT4X4 TRS;
 
 	XMFLOAT4 Position;
@@ -25,12 +25,12 @@ public:
 
 	inline ID3D11Buffer* const GetBuffer() { return TRSBuffer.Get(); }
 
-	void Translation(XMVECTOR Vector);
-	void Rotate(XMVECTOR Vector);
-	void SetScale(XMVECTOR Vector);
-	void SetScale(float x, float y, float z);
-	void SetPosition(float x, float y, float z);
-	void SetPosition(XMVECTOR Vector);
+	virtual void Translation(XMVECTOR Vector);
+	virtual void Rotate(XMVECTOR Vector);
+	virtual void SetScale(XMVECTOR Vector);
+	virtual void SetScale(float x, float y, float z);
+	virtual void SetPosition(float x, float y, float z);
+	virtual void SetPosition(XMVECTOR Vector);
 	// Component을(를) 통해 상속됨
 	virtual void Init() override;
 	virtual void Update() override;

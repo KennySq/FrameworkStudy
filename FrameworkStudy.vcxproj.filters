@@ -141,6 +141,12 @@
     <ClInclude Include="ImGuiPresets.h">
       <Filter>헤더 파일\Private</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>헤더 파일\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationControls.h">
+      <Filter>헤더 파일\Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -231,6 +237,12 @@
       <Filter>외부 파일\소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ImGuiPresets.cpp">
+      <Filter>소스 파일\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationControls.cpp">
+      <Filter>소스 파일\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
       <Filter>소스 파일\Private</Filter>
     </ClCompile>
   </ItemGroup>

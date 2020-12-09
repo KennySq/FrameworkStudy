@@ -16,8 +16,10 @@ void Application::InitImGui()
 
 bool Application::Init()
 {
-	Hardware = &D3DHardware::GetInstance(WindowHandle);
+	Hardware = &D3DHardware::GetInstance(WindowHandle, WindowInstance);
 	Renderer = &ImmediateRenderer::GetInstance();
+	Input = D3DHardware::GetInstance().GetInputManager();
+
 	auto Memory = MemoryBank::GetInstance();
 
 	Memory->RegisterComponent<MeshRenderer>();
@@ -53,9 +55,9 @@ bool Application::Init()
 	SelectedInst->AddComponent<MeshRenderer>();
 	SelectedInst->AddComponent<Transform>();
 	CameraInst->AddComponent<Camera>();
-	
+
 	auto MR = SelectedInst->GetComponent<MeshRenderer>();
-	
+
 	Model* M = new Model();
 	Material* Mat = new Material();
 
@@ -78,11 +80,32 @@ bool Application::Init()
 		XMVector4Normalize(XMVectorSet(-5.0f, -5.0f, 0.0f, 1.0f)
 						   - XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f)), 0.5f);
 
-	
+
 	InitImGui();
 	ImGui_ImplDX11_Init(Hardware->GetDevice(), Hardware->GetContext());
 
 	ImGui_ImplWin32_Init(WindowHandle);
+
+	auto MainCam = SelectedScene->GetMainCamera();
+	auto ForwardBind = [this, MainCam]() { CameraForward(MainCam); };
+	auto BackwardBind = [this, MainCam]() { CameraBackward(MainCam); };
+	auto LeftBind = [this, MainCam]() { CameraLeft(MainCam); };
+	auto RightBind = [this, MainCam]() { CameraRight(MainCam); };
+	auto UpBind = [this, MainCam]() { CameraUp(MainCam); };
+	auto DownBind = [this, MainCam]() { CameraDown(MainCam); };
+	
+	auto PitchBind = [this, MainCam](int dx, int dy) {CameraRotatePitch(MainCam,dx,dy ); };
+	auto YawBind = [this, MainCam](int dx, int dy) {CameraRotateYaw(MainCam,dx,dy); };
+
+	Input->AddTask(DIK_W, ForwardBind);
+	Input->AddTask(DIK_S, BackwardBind);
+	Input->AddTask(DIK_A, LeftBind);
+	Input->AddTask(DIK_D, RightBind);
+	Input->AddTask(DIK_Q, UpBind);
+	Input->AddTask(DIK_E, DownBind);
+
+	Input->AddMouseTask(0, PitchBind);
+	Input->AddMouseTask(0, YawBind);
 
 	return true;
 }
@@ -93,6 +116,10 @@ void Application::Update()
 	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Aqua);
 	Renderer->ClearDepthStencil(Renderer->GetDepthStencils()[0]);
 	
+	Input->Frame();
+	
+	
+
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();

@@ -46,5 +46,8 @@ HRESULT D3DHardware::GenerateDevice()
 		return E_FAIL;
 	}
 
+	Input = make_shared<InputManager>();
+	Input->Init(WindowInstance, WindowHandle, 800, 600);
+
 	return S_OK;
 }

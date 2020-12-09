@@ -17,6 +17,7 @@
 #include<iostream>
 #include<fstream>
 
+#include<functional>
 #include<map>
 #include<vector>
 #include<unordered_map>
@@ -27,6 +28,7 @@
 #include<d3d11.h>
 #include<dxgi.h>
 #include<d3dcompiler.h>
+#include<dinput.h>
 
 #include<DirectXMath.h>
 #include<DirectXColors.h>
@@ -34,6 +36,8 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "dinput8.lib")
+#pragma comment(lib, "dxguid.lib")
 
 #include"imgui/imgui.h"
 #include"imgui/imgui_impl_win32.h"
@@ -41,6 +45,7 @@
 
 // Utility
 #include"Utility.h"
+#include"InputManager.h"
 
 // Hardware
 #include"Hardware.h"
@@ -72,8 +77,9 @@
 #include"Component.h"
 
 #include"MeshRenderer.h"
-#include"Camera.h"
 #include"Transform.h"
+
+#include"Camera.h"
 
 // Engine Resources
 #include"MemoryBank.h"
@@ -83,4 +89,5 @@
 
 #include"ImGuiPresets.h"
 
+#include"ApplicationControls.h"
 #include"Application.h"
