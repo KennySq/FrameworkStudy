@@ -7,5 +7,5 @@ void CameraRight(Camera* const Cam);
 void CameraUp(Camera* const Cam);
 void CameraDown(Camera* const Cam);
 
-void CameraRotatePitch(Camera* const Cam, int dx, int dy);
-void CameraRotateYaw(Camera* const Cam, int dx, int dy);
+void CameraRotatePitch(Camera* const Cam, int delta);
+void CameraRotateYaw(Camera* const Cam, int delta);

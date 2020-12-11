@@ -19,7 +19,7 @@ class InputManager
 	int Width, Height;
 
 	unordered_map<unsigned char,function<void()>> KeyboardTasks;
-	unordered_map<int, function<void(int DeltaX, int DeltaY)>> MouseTasks;
+	vector<pair<int, function<void(int DeltaX, int DeltaY)>>> MouseTasks;
 private:
 	bool ReadKeyboard();
 	bool ReadMouse();
@@ -27,7 +27,10 @@ private:
 
 	bool IsButtonPressed(int Index);
 	bool IsPressed(unsigned char Key);
+
+#ifdef DEBUG
 	unsigned char IsPressedDebug(unsigned char Key);
+#endif
 
 public:
 	InputManager();
@@ -60,7 +63,7 @@ public:
 			return;
 		}
 
-		MouseTasks.insert_or_assign(Button, Task);
+		MouseTasks.emplace_back(Button, Task);
 
 		return;
 	}

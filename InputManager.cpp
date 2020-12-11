@@ -93,6 +93,8 @@ bool InputManager::IsPressed(unsigned char Key)
 	return KeyboardStates[Key] & 0x80;
 }
 
+#ifdef DEBUG
+
 unsigned char InputManager::IsPressedDebug(unsigned char Key)
 {
 	if (KeyboardStates[Key] & 0x80)
@@ -100,6 +102,8 @@ unsigned char InputManager::IsPressedDebug(unsigned char Key)
 
 	return NULL;
 }
+
+#endif
 
 InputManager::InputManager()
 {

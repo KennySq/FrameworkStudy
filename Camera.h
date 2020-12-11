@@ -35,7 +35,7 @@ public:
 
 
 	virtual void Translation(XMVECTOR Vector) override;
-	virtual void Rotate(XMVECTOR Vector) override;
+//	virtual void Rotate(XMVECTOR Vector) override;
 	virtual void SetScale(XMVECTOR Vector) override;
 	virtual void SetScale(float x, float y, float z) override;
 	virtual void SetPosition(float x, float y, float z) override;

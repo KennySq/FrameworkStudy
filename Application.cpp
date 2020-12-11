@@ -94,8 +94,8 @@ bool Application::Init()
 	auto UpBind = [this, MainCam]() { CameraUp(MainCam); };
 	auto DownBind = [this, MainCam]() { CameraDown(MainCam); };
 	
-	auto PitchBind = [this, MainCam](int dx, int dy) {CameraRotatePitch(MainCam,dx,dy ); };
-	auto YawBind = [this, MainCam](int dx, int dy) {CameraRotateYaw(MainCam,dx,dy); };
+	auto PitchBind = [this, MainCam](int dx, int dy) {CameraRotatePitch(MainCam,dy ); };
+	auto YawBind = [this, MainCam](int dx, int dy) {CameraRotateYaw(MainCam,dx); };
 
 	Input->AddTask(DIK_W, ForwardBind);
 	Input->AddTask(DIK_S, BackwardBind);

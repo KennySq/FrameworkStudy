@@ -37,15 +37,15 @@ void CameraDown(Camera * const Cam)
 
 }
 
-void CameraRotatePitch(Camera * const Cam, int dx, int dy)
+void CameraRotatePitch(Camera * const Cam, int delta)
 {
-	DebugLog(L_NORMAL, "Rotating pitch by mouse." + to_string(dx) + ", " + to_string(dy));
-	Cam->Rotate(XMVectorSet(0.0f, (float)dy*0.1f, 0.0f, 1.0f));
+	DebugLog(L_NORMAL, "Rotating pitch by mouse." + to_string(delta));
+	Cam->Rotate(XMVectorSet(0.0f, (float)delta*0.01f, 0.0f, 1.0f));
 
 }
 
-void CameraRotateYaw(Camera * const Cam, int dx, int dy)
+void CameraRotateYaw(Camera * const Cam, int delta)
 {
-	DebugLog(L_NORMAL, "Rotating yaw by mouse." + to_string(dx) + ", " + to_string(dy));
-	Cam->Rotate(XMVectorSet(0.0f, 0.0f, (float)dx*0.1f,1.0f));
+	DebugLog(L_NORMAL, "Rotating yaw by mouse." + to_string(delta));
+	Cam->Rotate(XMVectorSet(0.0f, 0.0f, (float)delta*0.01f,1.0f));
 }

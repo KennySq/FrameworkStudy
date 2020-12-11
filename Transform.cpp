@@ -6,7 +6,6 @@ void Transform::Translation(XMVECTOR Vector)
 	auto Origin = XMLoadFloat4x4(&TRS);
 
 	Origin *= XMMatrixTranslationFromVector(Vector);
-
 	XMStoreFloat4x4(&TRS, XMMatrixTranspose(Origin));
 
 	return;
@@ -16,9 +15,13 @@ void Transform::Rotate(XMVECTOR Vector)
 {
 	auto Origin = XMLoadFloat4x4(&TRS);
 
-	Origin *= XMMatrixTranspose(XMMatrixRotationRollPitchYaw(Vector.m128_f32[1], Vector.m128_f32[2], Vector.m128_f32[0]));
+	Origin *= XMMatrixRotationRollPitchYaw(
+		Vector.m128_f32[2],
+		Vector.m128_f32[0],
+		Vector.m128_f32[1]
+	);
 	
-	XMStoreFloat4x4(&TRS, Origin);
+	XMStoreFloat4x4(&TRS,Origin);
 
 	return;
 }
@@ -67,7 +70,6 @@ void Transform::Init()
 	ResultLog(Result, "Creating transform buffer.");
 
 	XMStoreFloat4x4(&TRS, XMMatrixIdentity());
-
 	Context->UpdateSubresource(TRSBuffer.Get(), 0, nullptr, &TRS, 0, 0);
 
 	return;

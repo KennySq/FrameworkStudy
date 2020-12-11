@@ -11,8 +11,8 @@ void Camera::Translation(XMVECTOR Vector)
 	XMStoreFloat4x4(&TRS, Origin);
 }
 
-void Camera::Rotate(XMVECTOR Vector)
-{}
+//void Camera::Rotate(XMVECTOR Vector)
+//{}
 
 void Camera::SetScale(XMVECTOR Vector)
 {}
@@ -37,7 +37,7 @@ void Camera::Init()
 							  XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f),
 							  XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f));
 
-	auto P = XMMatrixPerspectiveFovLH(XM_PIDIV2, 1.333f, 0.01f, 100.0f);
+	auto P = XMMatrixPerspectiveFovLH(XM_PIDIV2, 1.333f, 0.01f, 1000.0f);
 
 	SetView(XMMatrixTranspose(V));
 	SetProjection(XMMatrixTranspose(P));
