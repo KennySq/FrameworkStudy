@@ -147,6 +147,12 @@
     <ClInclude Include="ApplicationControls.h">
       <Filter>헤더 파일\Public</Filter>
     </ClInclude>
+    <ClInclude Include="SkullObject.h">
+      <Filter>헤더 파일\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="udc.h">
+      <Filter>헤더 파일\Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -244,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>소스 파일\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="SkullObject.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,9 @@ public:
 	virtual void SetScale(float x, float y, float z);
 	virtual void SetPosition(float x, float y, float z);
 	virtual void SetPosition(XMVECTOR Vector);
+
+	virtual void Orbiting(XMVECTOR Point, float Distance, float Theta);
+
 	// Component을(를) 통해 상속됨
 	virtual void Init() override;
 	virtual void Update() override;

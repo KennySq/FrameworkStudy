@@ -37,7 +37,7 @@ void Camera::Init()
 							  XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f),
 							  XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f));
 
-	auto P = XMMatrixPerspectiveFovLH(XM_PIDIV2, 1.333f, 0.01f, 1000.0f);
+	auto P = XMMatrixPerspectiveFovLH(XMConvertToRadians(50.0f), 1.333f, 0.01f, 1000.0f);
 
 	SetView(XMMatrixTranspose(V));
 	SetProjection(XMMatrixTranspose(P));
@@ -67,10 +67,12 @@ void Camera::Init()
 void Camera::Update()
 {
 	static auto Context = D3DHardware::GetInstance().GetContext();
+	static CameraInfo Info;
 
-	CameraInfo Info;
+	XMStoreFloat4(&Position, GetViewPosition());
 
 	Info.View = TRS;
+	Info.ViewPosition = Position;
 	XMStoreFloat4x4(&Info.Projection, GetProjection());
 	XMStoreFloat4(&Info.ViewPosition, GetViewPosition());
 

@@ -5,8 +5,8 @@ void Transform::Translation(XMVECTOR Vector)
 {
 	auto Origin = XMLoadFloat4x4(&TRS);
 
-	Origin *= XMMatrixTranslationFromVector(Vector);
-	XMStoreFloat4x4(&TRS, XMMatrixTranspose(Origin));
+	Origin *= XMMatrixTranspose(XMMatrixTranslationFromVector(Vector));
+	XMStoreFloat4x4(&TRS, Origin);
 
 	return;
 }
@@ -15,11 +15,11 @@ void Transform::Rotate(XMVECTOR Vector)
 {
 	auto Origin = XMLoadFloat4x4(&TRS);
 
-	Origin *= XMMatrixRotationRollPitchYaw(
+	Origin *= XMMatrixTranspose(XMMatrixRotationRollPitchYaw(
 		Vector.m128_f32[2],
 		Vector.m128_f32[0],
 		Vector.m128_f32[1]
-	);
+	));
 	
 	XMStoreFloat4x4(&TRS,Origin);
 
@@ -55,6 +55,23 @@ void Transform::SetPosition(XMVECTOR Vector)
 	TRS._43 = Vector.m128_f32[2];
 }
 
+void Transform::Orbiting(XMVECTOR Point, float Distance, float Theta)
+{
+	auto Origin = XMLoadFloat4x4(&TRS);
+
+	Origin.r[0].m128_f32[3] = Point.m128_f32[0]  + sin(Theta);
+	Origin.r[1].m128_f32[3] = Point.m128_f32[1];
+	Origin.r[2].m128_f32[3] = Point.m128_f32[2] + cos(Theta);
+	Origin.r[3].m128_f32[3] = Point.m128_f32[3];
+
+	Origin.r[0].m128_f32[3] *= Distance;
+//	Origin.r[1].m128_f32[3] *= Distance;
+	Origin.r[2].m128_f32[3] *= Distance;
+
+	XMStoreFloat4x4(&TRS, XMMatrixTranspose(Origin));
+
+	return;
+}
 
 void Transform::Init()
 {

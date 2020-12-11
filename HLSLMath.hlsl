@@ -75,8 +75,8 @@ float FDielct(float4 LightPosition, float4 Normal, float4 Surface, float nt, flo
 	
 	float cosi, cost;
 	
-	cosi = dot(LD, wi) / Distance;
-	cost = dot(LD, wt) / Distance;
+    cosi = saturate(dot(LD, wi)) / Distance;
+    cost = saturate(dot(LD, wt)) / Distance;
 	
 	ntwi = nt * cosi;
 	niwt = ni * cost;

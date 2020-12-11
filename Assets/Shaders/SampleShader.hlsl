@@ -66,7 +66,7 @@ VTP SampleVS(Vertex Input)
     Output.Position = mul(Output.Position, View);
     Output.Position = mul(Output.Position, Projection);
     
-    Output.Normal = normalize(float4(Input.Normal, 1.0f));
+    Output.Normal = mul(float4(Input.Normal, 1.0f), World);
     Output.UV = Input.UV;
     
     return Output;
@@ -98,13 +98,19 @@ float Torrance(float Fresnel, float Diffuse, float4 Normal, float4 LightDir, flo
 
     float Reflect = reflect(-LightDir, Normal);
     float Coso, Cosi;
-    float ViewLight = dot(-LightDir, ViewDir);
+    float ViewLight = abs(dot(-LightDir, ViewDir));
     
-    Coso = dot(-LightDir, Reflect);
-    Cosi = dot(-LightDir, Normal);
+    float Roughness;
     
-    Ret = (Fresnel * ViewLight) / (4 * Coso * Cosi);
-    //Fresnel * Diffuse 
+    Coso = abs(dot(-LightDir, Reflect));
+    Cosi = abs(dot(-LightDir, Normal));
+    
+    float min1 = (2.0f * (Normal * ViewLight) * (Normal * Coso)) / (Coso * ViewLight);
+    float min2 = (2.0f * (Normal * ViewLight) * (Normal * Cosi)) / (Coso * ViewLight);
+    
+    Roughness = min(1, min(min1, min2));
+    
+    Ret = (Roughness *Fresnel * ViewLight) / (4 * Coso * Cosi);
     
     return Ret;
 }
@@ -113,13 +119,13 @@ float4 SamplePS(VTP Input) : SV_Target0
 {
     float4 Color;
     
+    float4 Gold = float4(0.8f, 0.6f, 0.01f, 1.0f);
     float Diffuse = 0.0f;
     
     for (unsigned int i = 0; i < DirectionalCount; i++)
     {
         Diffuse += DirectionalDiffuse(DirectionalLights[i], Input.Normal);
-       // Diffuse += FDielct(float4(DirectionalLights[i].Direction, 1.0f),
-        //                     Input.Normal, 0.1f, 1.0f);
+        
        float Fr = FDielect(float4(DirectionalLights[i].Direction, 1.0f), Input.Normal, 0.1f, 1.0f);
         
         Diffuse += Torrance(Fr, Diffuse, Input.Normal, float4(DirectionalLights[i].Direction, 1.0f), ViewPosition, Input.WorldPosition);

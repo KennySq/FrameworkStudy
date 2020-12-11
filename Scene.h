@@ -77,6 +77,7 @@ public:
 
 	inline ID3D11Buffer* const GetLightBuffer() { return LightBuffer.Get(); }
 
+	void Init();
 	void Update(float Delta);
 
 };

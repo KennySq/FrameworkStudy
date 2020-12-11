@@ -56,6 +56,14 @@ void Scene::AddSpotLight(XMVECTOR Position, float Radius)
 
 }
 
+void Scene::Init()
+{
+	for (auto i : Instances)
+		i.second->Init();
+
+	return;
+}
+
 void Scene::Update(float Delta)
 {
 	UpdateLights();
@@ -67,6 +75,8 @@ void Scene::Update(float Delta)
 		{
 			c.second->Update();
 		}
+
+		i.second->Update(Delta);
 	}
 
 }

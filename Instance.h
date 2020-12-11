@@ -24,13 +24,13 @@ public:
 	inline size_t const GetIID() { return IID; }
 
 	template<class _Ty>
-	inline void AddComponent()
+	inline _Ty* AddComponent()
 	{
 		auto Memory = MemoryBank::GetInstance();
 		if (!Memory->FindComponent(typeid(_Ty).hash_code()))
 		{
 			DebugLog(L_WARNING, "Cannot find component");
-			return;
+			return nullptr;
 		}
 
 		_Ty* Comp = new _Ty();
@@ -40,6 +40,8 @@ public:
 		Components.insert_or_assign(typeid(_Ty).hash_code(), CompPtr);
 		CompPtr->Root = this;
 		CompPtr->Init();
+
+		return Comp;
 	}
 
 	template<class _Ty>
@@ -67,6 +69,11 @@ public:
 
 		return;
 	}
+
+	virtual void Init();
+	virtual void Update(float Delta);
+	virtual void Render(float Delta);
+	virtual void Release();
 
 	Instance();
 	~Instance();

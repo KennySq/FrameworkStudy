@@ -9,3 +9,6 @@ void CameraDown(Camera* const Cam);
 
 void CameraRotatePitch(Camera* const Cam, int delta);
 void CameraRotateYaw(Camera* const Cam, int delta);
+
+void CameraRotateOrbitYaw(Camera* const Cam, int delta);
+void CameraRotateOrbitPitch(Camera* const Cam, int delta);

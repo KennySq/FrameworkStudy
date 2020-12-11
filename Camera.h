@@ -25,7 +25,10 @@ public:
 		auto Dt = XMMatrixDeterminant(V);
 		auto Inv = XMMatrixInverse(&Dt, V);
 
-		return XMVectorSet(Inv.r[3].m128_f32[0], Inv.r[3].m128_f32[1], Inv.r[3].m128_f32[2], Inv.r[3].m128_f32[4]);
+		return XMVectorSet(Inv.r[0].m128_f32[3],
+						   Inv.r[1].m128_f32[3], 
+						   Inv.r[2].m128_f32[3],
+						   Inv.r[3].m128_f32[3]);
 	}
 
 	inline void SetView(XMMATRIX const Mat) { XMStoreFloat4x4(&TRS, Mat); }
