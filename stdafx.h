@@ -16,6 +16,7 @@
 #include<string>
 #include<iostream>
 #include<fstream>
+#include<time.h>
 
 #include<functional>
 #include<map>
@@ -46,6 +47,7 @@
 // Utility
 #include"Utility.h"
 #include"InputManager.h"
+#include"Time.h"
 
 // Hardware
 #include"Hardware.h"

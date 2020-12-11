@@ -153,6 +153,9 @@
     <ClInclude Include="udc.h">
       <Filter>헤더 파일\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>헤더 파일\Private</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -252,7 +255,10 @@
       <Filter>소스 파일\Private</Filter>
     </ClCompile>
     <ClCompile Include="SkullObject.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>소스 파일\Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

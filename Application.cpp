@@ -103,11 +103,14 @@ bool Application::Init()
 //	Input->AddMouseTask(0, PitchBind);
 //	Input->AddMouseTask(0, YawBind);
 
+	AppTimer.Start();
+
 	return true;
 }
 
 void Application::Update()
 {
+	AppTimer.Stop();
 
 	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Green);
 	Renderer->ClearDepthStencil(Renderer->GetDepthStencils()[0]);
@@ -129,7 +132,7 @@ void Application::Update()
 
 	ImGui::Render();
 	
-	SelectedScene->Update(0.016f);
+	SelectedScene->Update(AppTimer.GetDelta());
 }
 
 void Application::Render()
@@ -138,6 +141,7 @@ void Application::Render()
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	Renderer->SwapFrame();
+
 }
 
 void Application::Release()

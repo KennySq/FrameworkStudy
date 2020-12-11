@@ -14,6 +14,8 @@ private:
 	UINT Width;
 	UINT Height;
 
+	Timer AppTimer;
+
 	Scene* SelectedScene = nullptr;
 
 private:
