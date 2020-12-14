@@ -22,3 +22,5 @@ struct DSTexture2D
 	ComPtr<ID3D11DepthStencilView> DSV;
 	ComPtr<ID3D11ShaderResourceView> SRV;
 };
+
+void LoadCubemapFromDDS(const char* Path, RTTexture2D* const RT);

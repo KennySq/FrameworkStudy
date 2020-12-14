@@ -26,6 +26,9 @@ bool Application::Init()
 	Memory->RegisterComponent<Camera>();
 	Memory->RegisterComponent<Transform>();
 
+	Memory->AssignMaterialPass("Assets/Shaders/SampleShader.hlsl", "Sample");
+	Memory->AssignMaterialPass("Assets/Shaders/Skybox.hlsl", "Skybox");
+
 	if (!Hardware || !Renderer)
 		AssertCritical("Hardware or Renderer didn't initialized!", E_INVALIDARG);
 
@@ -50,22 +53,10 @@ bool Application::Init()
 
 	Instance* CameraInst = SelectedScene->FindInstanceWithIID(CameraID);
 
-	//SelectedInst->AddComponent<MeshRenderer>();
-	//SelectedInst->AddComponent<Transform>();
 	CameraInst->AddComponent<Camera>();
 
-	//SelectedInst->GetComponent<Transform>()->Translation(XMVectorSet(50.0f, -10.0f, 0.0f, 1.0f));
-	//SelectedInst->GetComponent<Transform>()->SetScale(4.0f, 4.0f, 4.0f);
-	//SelectedInst->GetComponent<Transform>()->Rotate(XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
-
-//	Mat->AddPass("Assets/Shaders/SampleShader.hlsl", "Sample");
-//	Memory->AddMaterial(Mat);
-	//MR->Materials.emplace_back(Mat);
-
-//	LoadStaticModelFromFile("Assets/Skull/SkullV.obj", M);
-//	MR->SetModel(M);
-
 	SelectedScene->AddInstance(new SkullObject());
+	SelectedScene->AddInstance(new Skybox());
 
 	SelectedScene->AddSpotLight(XMVectorSet(20.0f, 30.0f, 0.0f, 1.0f), 25.0f);
 	//SelectedScene->AddSpotLight(XMVectorSet(0.0f, 10.0f, 0.0f, 1.0f), 10.0f);
@@ -75,7 +66,6 @@ bool Application::Init()
 						   - XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f)), 0.6f);
 
 	SelectedScene->Init();
-
 
 	InitImGui();
 	ImGui_ImplDX11_Init(Hardware->GetDevice(), Hardware->GetContext());

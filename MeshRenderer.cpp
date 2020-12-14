@@ -1,6 +1,11 @@
 #include"stdafx.h"
 #include"MeshRenderer.h"
 
+MeshRenderer::MeshRenderer()
+{
+	RenderModel = new Model();
+}
+
 void MeshRenderer::Init()
 {
 	auto MB = MemoryBank::GetInstance();
@@ -27,15 +32,17 @@ void MeshRenderer::Update()
 
 	ID3D11Buffer* ConstantBuffers[] = {  TRSBuffer, CameraBuffer.Get(), LightBuffer };
 
-	Context->VSSetShader(Materials[0]->Passes["Sample"]->VS.Get(), nullptr, 0);
-	Context->PSSetShader(Materials[0]->Passes["Sample"]->PS.Get(), nullptr, 0);
+	Context->VSSetShader(CurrentPass->VS.Get(), nullptr, 0);
+	Context->PSSetShader(CurrentPass->PS.Get(), nullptr, 0);
 	Context->VSSetConstantBuffers(0, 3, ConstantBuffers);
 	Context->PSSetConstantBuffers(0, 3, ConstantBuffers);
-	Context->IASetInputLayout(Materials[0]->Passes["Sample"]->IL.Get());
+	Context->IASetInputLayout(CurrentPass->IL.Get());
 
 	Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	Context->IASetVertexBuffers(0, 1, RenderModel->VertexBuffer.GetAddressOf(), Strides, Offsets);
 	Context->IASetIndexBuffer(RenderModel->IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+	Context->RSSetState(RasterizerStates[0]);
 
 	RenderModel->IndexBuffer.Get()->GetDesc(&IndexDesc);
 	

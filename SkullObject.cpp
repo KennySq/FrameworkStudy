@@ -5,9 +5,17 @@
 void SkullObject::Init()
 {
 	static auto TRS = GetComponent<Transform>();
+	static auto MR = GetComponent<MeshRenderer>();
+	static auto HW = D3DHardware::GetInstance();
+
 	TRS->Translation(XMVectorSet(0.0f,0.0f, 0.0f, 1.0f));
 
 	TRS->Rotate(XMVectorSet(0.0f, 0.0f, -90.0f, 1.0f));
+
+	static auto RSD = HW.GetRSDesc();
+	MR->AddRS(RSD);
+
+	MR->SetPass("Sample");
 }
 
 void SkullObject::Update(float Delta)
@@ -24,18 +32,13 @@ SkullObject::SkullObject()
 	auto MR = AddComponent<MeshRenderer>();
 	auto Memory = MemoryBank::GetInstance();
 
-	Model* M = new Model();
-	Material* Mat = new Material();
+	LoadStaticModelFromFile("Assets/Skull/SkullV.obj", MR->RenderModel);
 
-	LoadStaticModelFromFile("Assets/Skull/SkullV.obj", M);
-	MR->SetModel(M);
 
-	Mat->AddPass("Assets/Shaders/SampleShader.hlsl", "Sample");
-	Memory->AddMaterial(Mat);
-
-	MR->Materials.emplace_back(Mat); 
+	MR->Materials.emplace_back(Memory->GetMaterialByPass("Sample")); 
 }
 
 
 SkullObject::~SkullObject()
-{}
+{
+}

@@ -94,6 +94,15 @@ public:
 		MaterialCache.emplace_back(Mat);
 	}
 
+	inline void AssignMaterialPass(string Path, string PassName)
+	{
+		Material* Mat = new Material();
+
+		Mat->AddPass(Path, PassName);
+
+		MaterialCache.emplace_back(Mat);
+	}
+
 	inline Material* const GetMaterial(UINT Index)
 	{
 		if (Index >= MaterialCache.size() && Index < 0)
@@ -103,6 +112,17 @@ public:
 		}
 
 		return MaterialCache[Index];
+	}
+
+	inline Material* const GetMaterialByPass(const char* PassName)
+	{
+		for (auto m : MaterialCache)
+		{
+			if (m->Passes.find(PassName) != m->Passes.end())
+				return m;
+		}
+
+		return nullptr;
 	}
 
 	static MemoryBank* const GetInstance() { if (!Instance) Instance = make_shared<MemoryBank>(); return &*Instance; }

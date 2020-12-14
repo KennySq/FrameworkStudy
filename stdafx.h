@@ -93,5 +93,6 @@
 
 #include"ApplicationControls.h"
 
+#include"PrimitiveGeometry.h"
 #include"udc.h"
 #include"Application.h"

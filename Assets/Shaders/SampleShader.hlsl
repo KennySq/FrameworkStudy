@@ -1,18 +1,10 @@
 #include"HLSLMath.hlsl"
+#include"Light.hlsl"
 
 SamplerState DefaultSampler : register(s0);
 
-struct DirectionalLight
-{
-    float3 Direction;
-    float Intensity;
-};
 
-struct SpotLight
-{
-    float3 Position;
-    float Radius;
-};
+
 
 cbuffer Instance : register(b0)
 {
@@ -93,12 +85,18 @@ float SpotDiffuse(SpotLight Light, float4 Position, float4 Normal)
 
 float Blinn(float4 LightDir, float4 ViewDir, float4 Normal, float Exp)
 {
-    float ViewLight = abs(dot(-LightDir, ViewDir));
-    float Diffuse = abs(dot(-LightDir, Normal));
+    float4 wi, wo;
+    wi = LightDir;
+    wo = reflect(LightDir, Normal);
+    float4 wh = normalize(wi + wo);
+    
+    float4 coswh = abs(cos(dot(-wh, Normal)));
+    float ViewLight = abs(dot(-wo, ViewDir));
+    float Diffuse = abs(dot(-wi, Normal));
     
     float Pi2 = 3.141592 * 2.0f;
     
-    float D = ((Exp + 2) / (Pi2)) * pow((ViewLight * Normal), Exp);
+    float D = ((Exp + 2) / (Pi2)) * pow(wh, Exp);
 
     return D;
 }
@@ -109,22 +107,26 @@ float Torrance(float Fresnel, float Diffuse, float4 Normal, float4 LightDir, flo
     
     float4 ViewDir = normalize(Surface - ViewPos);
     float Coso, Cosi;
+    
+    float4 wi = LightDir;
+    float wo = reflect(wi, Normal);
+    
     Coso = abs(dot(-ViewDir, Normal));
     Cosi = abs(dot(-LightDir, Normal));
     
    // float4 Wh = normalize( Cosi + Coso);
-    float ViewLight = normalize(Cosi + Coso); //abs(dot(ViewDir, -Normal));
+    float4 Wh = normalize(wi + wo); //abs(dot(ViewDir, -Normal));
     
     float Roughness;
     
 
     
-    float min1 = (2.0f * (Normal * ViewLight) * (Normal * Coso)) / (Coso * ViewLight);
-    float min2 = (2.0f * (Normal * ViewLight) * (Normal * Cosi)) / (Coso * ViewLight);
+    float min1 = (2.0f * (Normal * Wh) * (Normal * wo)) / (wo * Wh);
+    float min2 = (2.0f * (Normal * Wh) * (Normal * wi)) / (wo * Wh);
     
     Roughness = min(1, min(min1, min2));
     
-    Ret = (Roughness *Fresnel * ViewLight) / (4.0f * Coso * Cosi);
+    Ret = (Roughness *Fresnel * Wh) / (4.0f * Coso * Cosi);
     
     return saturate(Ret);
 }
@@ -136,27 +138,32 @@ float4 SamplePS(VTP Input) : SV_Target0
     float4 Gold = float4(0.8f, 0.6f, 0.01f, 1.0f);
     float Diffuse = 0.0f;
     
-    float4 ViewDir = normalize(Input.WorldPosition - ViewPosition);
+    float4 ViewDir = normalize(Input.Normal - ViewPosition);
     
     for (unsigned int i = 0; i < DirectionalCount; i++)
     {
-        Diffuse += Blinn(float4(DirectionalLights[i].Direction, 1.0f), ViewDir, Input.Normal, 10.0f);
+        Diffuse += Blinn(float4(DirectionalLights[i].Direction, 1.0f), ViewDir, Input.Normal, 2.0f);
         
-       float Fr = FDielect(float4(DirectionalLights[i].Direction, 1.0f), Input.Normal, 0.1f, 0.7f);
-        
-        Diffuse += Torrance(Fr, saturate(Diffuse), Input.Normal, float4(DirectionalLights[i].Direction, 1.0f), ViewPosition, Input.WorldPosition);
-
+       
     }
     
-    for (unsigned int j = 0; j < SpotCount; j++)
-    {
+    //for (unsigned int i = 0; i < DirectionalCount;i++)
+    //{
+    //    float Fr = FDielect(float4(DirectionalLights[i].Direction, 1.0f), Input.Normal, 0.5f, 1.0f);
+        
+    //    Diffuse += Torrance(Fr, saturate(Diffuse), Input.Normal, float4(DirectionalLights[i].Direction, 1.0f), ViewPosition, Input.WorldPosition);
+
+    //}
+    
+        for (unsigned int j = 0; j < SpotCount; j++)
+        {
       //  Diffuse += SpotDiffuse(SpotLights[j], Input.WorldPosition, Input.Normal);
      //   Diffuse += FDielct(float4(SpotLights[j].Position, 1.0f),
      //                        Input.Normal, Input.WorldPosition, 1.0f, 1.0f);
 
-    }
+        }
     
     
     
-    return Diffuse.xxxx ;
+    return Diffuse.xxxx;
 }

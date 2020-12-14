@@ -156,6 +156,12 @@
     <ClInclude Include="Time.h">
       <Filter>헤더 파일\Private</Filter>
     </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>헤더 파일\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveGeometry.h">
+      <Filter>헤더 파일\Private</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -260,6 +266,12 @@
     <ClCompile Include="Time.cpp">
       <Filter>소스 파일\Private</Filter>
     </ClCompile>
+    <ClCompile Include="PrimitiveGeometry.cpp">
+      <Filter>소스 파일\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>소스 파일\Public</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ComputeShader.rc">
@@ -279,6 +291,12 @@
       <Filter>리소스 파일\Shaders</Filter>
     </None>
     <None Include="HLSLMath.hlsl">
+      <Filter>리소스 파일\Shaders</Filter>
+    </None>
+    <None Include="Light.hlsl">
+      <Filter>리소스 파일\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Skybox.hlsl">
       <Filter>리소스 파일\Shaders</Filter>
     </None>
   </ItemGroup>
