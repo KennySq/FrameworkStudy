@@ -50,9 +50,9 @@ void Transform::SetPosition(float x, float y, float z)
 
 void Transform::SetPosition(XMVECTOR Vector)
 {
-	TRS._41 = Vector.m128_f32[0];
-	TRS._42 = Vector.m128_f32[1];
-	TRS._43 = Vector.m128_f32[2];
+	TRS._14 = Vector.m128_f32[0];
+	TRS._24 = Vector.m128_f32[1];
+	TRS._34 = Vector.m128_f32[2];
 }
 
 void Transform::Orbiting(XMVECTOR Point, float Distance, float Theta)

@@ -100,7 +100,11 @@ bool Application::Init()
 
 void Application::Update()
 {
+	static auto Context = D3DHardware::GetInstance().GetContext();
+
 	AppTimer.Stop();
+	Renderer->SetRenderTarget(Renderer->GetTextures2D(), 1, Renderer->GetDepthStencils()[0]);
+	Context->RSSetViewports(1, &Renderer->GetViewport(0));
 
 	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Green);
 	Renderer->ClearDepthStencil(Renderer->GetDepthStencils()[0]);

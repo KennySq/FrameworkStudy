@@ -35,8 +35,7 @@ public:
 	inline void SetProjection(XMMATRIX const Mat) { XMStoreFloat4x4(&Projection, Mat); }
 
 	inline ComPtr<ID3D11Buffer>& const GetBuffer() { return CameraBuffer; }
-
-
+	
 	virtual void Translation(XMVECTOR Vector) override;
 //	virtual void Rotate(XMVECTOR Vector) override;
 	virtual void SetScale(XMVECTOR Vector) override;

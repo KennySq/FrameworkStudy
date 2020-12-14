@@ -11,6 +11,16 @@ struct MeshRenderer : public Component
 
 	vector<ID3D11RasterizerState*> RasterizerStates;
 
+	inline void BindSRV(ID3D11ShaderResourceView* SRV, UINT Index)
+	{
+		if (!SRV)
+		{
+			DebugLog(L_WARNING, "The SRV is empty.");
+			return;
+		}
+
+		CurrentPass->RegisterT[Index] = SRV;
+	}
 
 	inline void SetModel(Model* const Source)
 	{

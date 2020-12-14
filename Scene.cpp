@@ -71,12 +71,16 @@ void Scene::Update(float Delta)
 	for (auto i : Instances)
 	{
 		auto Comps = i.second->GetAllComponents();
+	
+		i.second->Update(Delta);
+
 		for (auto c : Comps)
 		{
 			c.second->Update();
 		}
 
-		i.second->Update(Delta);
+		i.second->Render(Delta);
+
 	}
 
 }

@@ -65,7 +65,7 @@ public:
 
 	inline void AddViewport(D3D11_VIEWPORT Viewport) { Viewports.emplace_back(Viewport); Context->RSSetViewports(Viewports.size(), Viewports.data()); }
 	inline void RemoveViewport(UINT Index) { Viewports.erase(Viewports.begin() + Index); }
-
+	inline D3D11_VIEWPORT& GetViewport(UINT Index) { if (Index >= 0 && Index < Viewports.size()) return Viewports[Index]; return Viewports[0]; }
 
 	inline void SwapFrame() { SwapChain->Present(0, 0); }
 
