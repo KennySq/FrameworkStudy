@@ -177,9 +177,6 @@
     <ClInclude Include="Hardware.h" />
     <ClInclude Include="HLSLCompiler.h" />
     <None Include="DirectXTK\inc\SimpleMath.inl" />
-    <None Include="HLSLMath.hlsl">
-      <FileType>Document</FileType>
-    </None>
     <ClInclude Include="ImGuiPresets.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -297,6 +294,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\Skybox.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\HLSLMath.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

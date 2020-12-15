@@ -362,9 +362,6 @@
     <None Include="Assets\Shaders\SampleShader.hlsl">
       <Filter>리소스 파일\Shaders</Filter>
     </None>
-    <None Include="HLSLMath.hlsl">
-      <Filter>리소스 파일\Shaders</Filter>
-    </None>
     <None Include="Light.hlsl">
       <Filter>리소스 파일\Shaders</Filter>
     </None>
@@ -373,6 +370,9 @@
     </None>
     <None Include="DirectXTK\inc\SimpleMath.inl">
       <Filter>외부 파일\DirectXTK\헤더 파일</Filter>
+    </None>
+    <None Include="Assets\Shaders\HLSLMath.hlsl">
+      <Filter>리소스 파일\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
