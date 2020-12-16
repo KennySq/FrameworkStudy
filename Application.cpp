@@ -56,7 +56,7 @@ bool Application::Init()
 	CameraInst->AddComponent<Camera>();
 
 	SelectedScene->AddInstance(new SkullObject());
-	SelectedScene->AddInstance(new Skybox());
+//	SelectedScene->AddInstance(new Skybox());
 
 	SelectedScene->AddSpotLight(XMVectorSet(20.0f, 30.0f, 0.0f, 1.0f), 25.0f);
 	//SelectedScene->AddSpotLight(XMVectorSet(0.0f, 10.0f, 0.0f, 1.0f), 10.0f);

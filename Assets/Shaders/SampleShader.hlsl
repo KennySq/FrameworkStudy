@@ -105,30 +105,34 @@ float Torrance(float Fresnel, float Diffuse, float4 Normal, float4 LightDir, flo
 {
     float Ret = 0.0f;
     
-    float4 ViewDir = normalize(Surface - ViewPos);
+    float4 ViewDir = Surface - ViewPos;
     float Coso, Cosi;
     
-    float4 wi = LightDir;
-    float4 wo = reflect(LightDir, Normal);
+	//Normal = normalize(Normal);
     
-    Coso = abs(dot(-ViewDir, Normal));
-    Cosi = abs(dot(-LightDir, Normal));
+	float4 wi = normalize(LightDir);
+	float4 wo = normalize(reflect(LightDir, Normal));
+    
+    Coso = abs(dot(wo, ViewDir));
+    Cosi = abs(dot(wi, Normal));
     
    // float4 Wh = normalize( Cosi + Coso);
     float4 Wh = normalize(wi + wo); //abs(dot(ViewDir, -Normal));
     
-    float Roughness;
+	float NdotWh = abs(dot(Wh, Normal));
+	float NdotWo = abs(dot(wo, Normal));
+	float NdotWi = abs(dot(wi, Normal));
     
-
+    float Roughness = 0.0f;
     
-    float4 min1 = (2.0f * (Normal * Wh) * (Normal * wo)) / (wo * Wh);
-    float4 min2 = (2.0f * (Normal * Wh) * (Normal * wi)) / (wo * Wh);
+    float4 min1 = (2.0f * NdotWh * NdotWo) / (wo * Wh);
+    float4 min2 = (2.0f * NdotWh * NdotWi) / (wo * Wh);
     
-    Roughness = min(1, min(min1, min2));
+    Roughness = min(1.0f, min(min1, min2));
     
-    Ret = (Roughness * Fresnel * Wh) / (4.0f * Coso * Cosi);
+    Ret = (Roughness * Fresnel * NdotWh) / (4.0f * Coso * Cosi);
     
-    return saturate(Ret);
+	return Ret;
 }
 
 float4 SamplePS(VTP Input) : SV_Target0
@@ -142,15 +146,15 @@ float4 SamplePS(VTP Input) : SV_Target0
     
     for (unsigned int i = 0; i < DirectionalCount; i++)
     {
-      //  Diffuse += Blinn(float4(DirectionalLights[i].Direction, 1.0f), ViewDir, Input.Normal, 2.0f);
+       //Diffuse += Blinn(float4(DirectionalLights[i].Direction, 1.0f), ViewDir, Input.Normal, 2.0f);
         
-        float Fr = saturate(FDielect(float4(DirectionalLights[i].Direction, 1.0f), Input.Normal, ViewDir, 1.46f, 1.0f));
+        float Fr = FDielect(float4(DirectionalLights[i].Direction, 1.0f), Input.Normal, ViewPosition, 2.44f, 1.0f);
         
-        Fr = saturate(Fr);
+        //Fr = saturate(Fr);
+       // Diffuse += Torrance(Fr, Diffuse, Input.Normal, float4(DirectionalLights[i].Direction, 1.0f), ViewPosition, Input.WorldPosition);
         
         Diffuse += Fr;
         
-      //  Diffuse += Torrance(Fr, saturate(Diffuse), Input.Normal, float4(DirectionalLights[i].Direction, 1.0f), ViewPosition, Input.WorldPosition);
 
     }
     

@@ -64,7 +64,11 @@ VTP SkyboxVS(Vertex Input)
 
 float4 SkyboxPS(VTP Input) : SV_Target0
 {
-    float4 Color = SkyboxTexture.Sample(DefaultSampler, Input.Normal.xyz);
     
+	float4 ViewDir = normalize(Input.WorldPosition - ViewPosition);
+
+	float4 Ref = reflect(ViewDir, Input.Normal);
+	float4 Color = SkyboxTexture.Sample(DefaultSampler, Ref.xyz);
+
     return Color;
 }

@@ -8,7 +8,7 @@ void LoadCubemapFromDDS(const char * Path, RTTexture2D * const RT)
 	auto Device = D3DHardware::GetInstance().GetDevice();
 	auto Result = CreateDDSTextureFromFile(Device, A2W(Path),
 				(ID3D11Resource**)RT->RawTexture.GetAddressOf(),
-				RT->SRV.GetAddressOf());
+					RT->SRV.GetAddressOf());
 
 	ResultLog(Result, "Creating DDS texture from file.");
 
