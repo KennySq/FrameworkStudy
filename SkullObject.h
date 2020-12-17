@@ -3,6 +3,9 @@
 class SkullObject :
 	public Instance
 {
+private:
+	MeshRenderer* MR;
+	RTTexture2D Tex;
 public:
 
 	virtual void Init() override;

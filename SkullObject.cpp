@@ -5,34 +5,46 @@
 void SkullObject::Init()
 {
 	static auto TRS = GetComponent<Transform>();
-	static auto MR = GetComponent<MeshRenderer>();
+	MR = GetComponent<MeshRenderer>();
 	static auto HW = D3DHardware::GetInstance();
+	static auto Memory = MemoryBank::GetInstance();
 
-	TRS->Translation(XMVectorSet(0.0f,0.0f, 0.0f, 1.0f));
+	TRS->Translation(XMVectorSet(0.0f,-10.0f, 0.0f, 1.0f));
 
 	TRS->Rotate(XMVectorSet(0.0f, 0.0f, -90.0f, 1.0f));
+	TRS->Rotate(XMVectorSet(0.0f, 11.0f, 0.0f, 1.0f));
 
 	static auto RSD = HW.GetRSDesc();
 	MR->AddRS(RSD);
 
 	MR->SetPass("Sample");
+	MR->BindSRV(Tex.SRV.Get(), 0);
 }
 
 void SkullObject::Update(float Delta)
 {
-	static auto TRS = GetComponent<Transform>();
+	static auto Context = D3DHardware::GetInstance().GetContext();
 
-	TRS->Rotate(XMVectorSet(0.0f, 0.1f * Delta, 0.0f, 1.0f));
+	static auto TRS = GetComponent<Transform>();
+	static auto CurrentPass = MR->CurrentPass;
+
+	TRS->Rotate(XMVectorSet(0.0f, 0.1f*Delta, 0.0f, 1.0f));
+
+
+	Context->PSSetShaderResources(0, 1, CurrentPass->RegisterT[0].GetAddressOf());
 
 }
 
 SkullObject::SkullObject()
 {
 	AddComponent<Transform>();
-	auto MR = AddComponent<MeshRenderer>();
+	MR = AddComponent<MeshRenderer>();
 	auto Memory = MemoryBank::GetInstance();
 
-	LoadStaticModelFromFile("Assets/Skull/SkullV.obj", MR->RenderModel);
+	//LoadStaticModelFromFile("Assets/Skull/SkullV.obj", MR->RenderModel);
+	GenerateSphere(10.0f, 32, 64, MR->RenderModel);
+
+	LoadCubemapFromDDS("Assets/Textures/SampleCubemap.dds", &Tex);
 
 
 	MR->Materials.emplace_back(Memory->GetMaterialByPass("Sample")); 

@@ -1,13 +1,15 @@
-float FConduct(float4 LightDirection, float4 Normal, float n, float k)
+float FConduct(float4 LightDirection, float4 Normal, float n, float k, float cosi)
 {
 	float Ret = 0.0f;
 	
 	float Perp = 0.0f;
 	float Parl = 0.0f;
 	
-	float cosi;
+    Normal = normalize(Normal);
+    LightDirection = normalize(LightDirection);
 	
-	cosi = dot(-LightDirection, Normal);
+	
+  //  cosi = abs(dot(LightDirection, Normal));
 	
 	Parl = ((n * n + k * k) * (cosi * cosi) - 2 * n * cosi + 1) /
 			((n * n + k * k) * (cosi * cosi) + 2 * n * cosi + 1);
@@ -15,19 +17,17 @@ float FConduct(float4 LightDirection, float4 Normal, float n, float k)
 	Perp = ((n * n + k * k) - (2 * n * cosi) + (cosi * cosi)) /
 			((n * n + k * k) + (2 * n * cosi) + (cosi * cosi));
 	
-	Ret = (Parl * Parl + Perp * Perp) / 2.0f;
+    Ret = (Parl + Perp) / 2.0f;
 	
     return 1.0f - Ret;
 }
 
-float FDielect(float4 LightDirection, float4 Normal, float4 ViewPosition, float nt, float ni)
+float FDielect(float4 LightDirection, float4 Normal,float4 Surface, float4 ViewPosition, float nt, float ni)
 {
-	float4 LD = -LightDirection;
+    float4 LD = -normalize(LightDirection);
 	
-	
-	float4 ViewDir = normalize(Normal - ViewPosition);
-	
-	Normal = normalize(-Normal);
+    float4 ViewDir = -normalize(Surface - ViewPosition);
+    Normal = normalize(Normal);
 	
 	float Ret = 0.0f;
 	
@@ -36,15 +36,15 @@ float FDielect(float4 LightDirection, float4 Normal, float4 ViewPosition, float 
 	
 	float4 wi = 0.0f, wt = 0.0f;
 	
-	float4 ntwi = 0.0f, niwt = 0.0f;
-	float4 ntwt = 0.0f, niwi = 0.0f;
+	float ntwi = 0.0f, niwt = 0.0f;
+	float ntwt = 0.0f, niwi = 0.0f;
 	
 	float ldoti, ldott;
 	
 	wi = LD;
-	wt = normalize(refract(LD, Normal, nt));
+    wt = normalize(refract(LD, Normal, nt));
 	
-	ldoti = abs(dot(wi, Normal));
+    ldoti = abs(dot(wi, Normal));
     ldott = abs(dot(wt, ViewDir));
 	
 	ntwi = nt * ldoti;
@@ -55,7 +55,7 @@ float FDielect(float4 LightDirection, float4 Normal, float4 ViewPosition, float 
 	Parl = (ntwi - niwt) / (ntwi + niwt);
 	Perp = (niwi - ntwt) / (niwi + ntwt);
 	
-	Ret = ((Parl * Parl) + (Perp * Perp)) / 2;
+	Ret = ((Parl * Parl) + (Perp * Perp)) / 2.0f;
 	
 	return Ret;
 }

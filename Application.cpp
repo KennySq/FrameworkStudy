@@ -106,7 +106,7 @@ void Application::Update()
 	Renderer->SetRenderTarget(Renderer->GetTextures2D(), 1, Renderer->GetDepthStencils()[0]);
 	Context->RSSetViewports(1, &Renderer->GetViewport(0));
 
-	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Green);
+	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Black);
 	Renderer->ClearDepthStencil(Renderer->GetDepthStencils()[0]);
 	
 	Input->Frame();

@@ -95,6 +95,11 @@ void Transform::Init()
 void Transform::Update()
 {
 	static auto Context = D3DHardware::GetInstance().GetContext();
+	
+//	swap(TRS._14, TRS._41);
+//	swap(TRS._24, TRS._42);
+//	swap(TRS._34, TRS._43);
+	
 	Context->UpdateSubresource(TRSBuffer.Get(), 0, nullptr, &TRS, 0, 0);
 }
 
