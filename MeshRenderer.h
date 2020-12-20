@@ -11,6 +11,17 @@ struct MeshRenderer : public Component
 
 	vector<ID3D11RasterizerState*> RasterizerStates;
 
+	inline void BindUAV(ID3D11UnorderedAccessView* UAV, UINT Index)
+	{
+		if (!UAV)
+		{
+			DebugLog(L_WARNING, "The UAV is empty.");
+			return;
+		}
+
+		CurrentPass->RegisterU[Index] = UAV;
+	}
+
 	inline void BindSRV(ID3D11ShaderResourceView* SRV, UINT Index)
 	{
 		if (!SRV)

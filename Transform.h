@@ -25,7 +25,7 @@ public:
 
 	inline ID3D11Buffer* const GetBuffer() { return TRSBuffer.Get(); }
 
-	virtual void Translation(XMVECTOR Vector);
+	virtual void Translation(XMVECTOR Vector, bool isLocal);
 	virtual void Rotate(XMVECTOR Vector);
 	virtual void SetScale(XMVECTOR Vector);
 	virtual void SetScale(float x, float y, float z);

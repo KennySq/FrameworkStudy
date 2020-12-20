@@ -26,8 +26,9 @@ bool Application::Init()
 	Memory->RegisterComponent<Camera>();
 	Memory->RegisterComponent<Transform>();
 
-	Memory->AssignMaterialPass("Assets/Shaders/SampleShader.hlsl", "Sample");
-	Memory->AssignMaterialPass("Assets/Shaders/Skybox.hlsl", "Skybox");
+	Memory->AssignMaterialPass("Assets/Shaders/SampleShader.hlsl", "Sample", FLAG_VS | FLAG_PS);
+	Memory->AssignMaterialPass("Assets/Shaders/Skybox.hlsl", "Skybox", FLAG_VS | FLAG_PS);
+	Memory->AssignMaterialPass("Assets/Shaders/VolumeTexture.hlsl", "VolumeTexture",FLAG_CS);
 
 	if (!Hardware || !Renderer)
 		AssertCritical("Hardware or Renderer didn't initialized!", E_INVALIDARG);
@@ -56,14 +57,14 @@ bool Application::Init()
 	CameraInst->AddComponent<Camera>();
 
 	SelectedScene->AddInstance(new SkullObject());
+	SelectedScene->AddInstance(new RenderableQuad());
 //	SelectedScene->AddInstance(new Skybox());
 
 	SelectedScene->AddSpotLight(XMVectorSet(20.0f, 30.0f, 0.0f, 1.0f), 25.0f);
 	//SelectedScene->AddSpotLight(XMVectorSet(0.0f, 10.0f, 0.0f, 1.0f), 10.0f);
 
 	SelectedScene->AddDirectionalLight(
-		XMVector4Normalize(XMVectorSet(-5.0f, -5.0f, 0.0f, 1.0f)
-						   - XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f)), 0.6f);
+		XMVector3Normalize(XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f) - XMVectorSet(30.0f, 30.0f, 30.0f, 1.0f)), 1.0f);
 
 	SelectedScene->Init();
 

@@ -234,6 +234,9 @@
     <ClInclude Include="DirectXTK\inc\XboxDDSTextureLoader.h">
       <Filter>외부 파일\DirectXTK\헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="RenderableQuad.h">
+      <Filter>헤더 파일\Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -344,6 +347,9 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>소스 파일\Public</Filter>
     </ClCompile>
+    <ClCompile Include="RenderableQuad.cpp">
+      <Filter>소스 파일\Public</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ComputeShader.rc">
@@ -372,6 +378,9 @@
       <Filter>외부 파일\DirectXTK\헤더 파일</Filter>
     </None>
     <None Include="Assets\Shaders\HLSLMath.hlsl">
+      <Filter>리소스 파일\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\VolumeTexture.hlsl">
       <Filter>리소스 파일\Shaders</Filter>
     </None>
   </ItemGroup>

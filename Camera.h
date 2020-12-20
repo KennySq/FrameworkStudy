@@ -27,7 +27,7 @@ public:
 
 		return XMVectorSet(Inv.r[0].m128_f32[3],
 						   Inv.r[1].m128_f32[3], 
-						   Inv.r[2].m128_f32[3],
+						   Inv.r[2].m128_f32[3], 
 						   Inv.r[3].m128_f32[3]);
 	}
 
@@ -36,7 +36,7 @@ public:
 
 	inline ComPtr<ID3D11Buffer>& const GetBuffer() { return CameraBuffer; }
 	
-	virtual void Translation(XMVECTOR Vector) override;
+	virtual void Translation(XMVECTOR Vector, bool isLocal) override;
 //	virtual void Rotate(XMVECTOR Vector) override;
 	virtual void SetScale(XMVECTOR Vector) override;
 	virtual void SetScale(float x, float y, float z) override;

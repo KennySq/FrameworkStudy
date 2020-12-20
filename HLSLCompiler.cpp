@@ -94,6 +94,29 @@ HRESULT CompileVS(string Path, string Entry, ID3D11VertexShader** ppVS, ID3D11In
 
 }
 
+HRESULT CompileCS(string Path, string Entry, ID3D11ComputeShader** ppCS)
+{
+	USES_CONVERSION;
+
+	DWORD Flag = 0;
+	auto Device = D3DHardware::GetInstance().GetDevice();
+#ifdef DEBUG
+	Flag |= D3DCOMPILE_DEBUG;
+#endif
+
+	ID3DBlob* CBlob = nullptr, * ErrBlob = nullptr;
+	ID3D11ShaderReflection* pReflection;
+
+	auto Result = D3DCompileFromFile(A2W(Path.c_str()), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, (Entry + "CS").c_str(), "cs_5_0", Flag, 0, &CBlob, &ErrBlob);
+	ResultLog(Result, Path + " => Compiling HLSL file.");
+
+	Result = Device->CreateComputeShader(CBlob->GetBufferPointer(), CBlob->GetBufferSize(), nullptr, ppCS);
+	ResultLog(Result, Path + " => Creating a compute shader.");
+
+	return Result;
+
+}
+
 HRESULT CompilePS(string Path, string Entry, ID3D11PixelShader** ppPS)
 {
 	USES_CONVERSION;
@@ -117,12 +140,18 @@ HRESULT CompilePS(string Path, string Entry, ID3D11PixelShader** ppPS)
 
 }
 
-HRESULT CompilePassFromFile(string Path, string Entry, Pass* pPass)
+HRESULT CompilePassFromFile(string Path, string Entry, Pass* pPass, int CompileFlag)
 {
 
+	if(CompileFlag & FLAG_VS)
+		CompileVS(Path, Entry, pPass->VS.GetAddressOf(), pPass->IL.GetAddressOf());
+	
+	if (CompileFlag & FLAG_PS)
+		CompilePS(Path, Entry, pPass->PS.GetAddressOf());
 
-	CompileVS(Path, Entry, pPass->VS.GetAddressOf(), pPass->IL.GetAddressOf());
-	CompilePS(Path, Entry, pPass->PS.GetAddressOf());
+	if (CompileFlag & FLAG_CS)
+		CompileCS(Path, Entry, pPass->CS.GetAddressOf());
+
 
 	return S_OK;
 }

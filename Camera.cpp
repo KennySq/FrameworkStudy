@@ -1,12 +1,13 @@
 #include"stdafx.h"
 #include"Camera.h"
 
-void Camera::Translation(XMVECTOR Vector)
+void Camera::Translation(XMVECTOR Vector, bool isLocal)
 {
 	auto Origin = GetView();
 
-
 	Origin *= XMMatrixTranspose(XMMatrixTranslationFromVector(Vector));
+
+	
 
 	XMStoreFloat4x4(&TRS, Origin);
 }
@@ -38,6 +39,8 @@ void Camera::Init()
 							  XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f));
 
 	auto P = XMMatrixPerspectiveFovLH(XMConvertToRadians(50.0f), 1.333f, 0.01f, 1000.0f);
+
+	XMStoreFloat4(&Position, XMVectorSet(-40.0f, 0.0f, 0.0f, 1.0f));
 
 	SetView(XMMatrixTranspose(V));
 	SetProjection(XMMatrixTranspose(P));
@@ -73,6 +76,9 @@ void Camera::Update()
 
 	Info.View = TRS;
 	Info.ViewPosition = Position;
+
+	
+
 	XMStoreFloat4x4(&Info.Projection, GetProjection());
 	XMStoreFloat4(&Info.ViewPosition, GetViewPosition());
 

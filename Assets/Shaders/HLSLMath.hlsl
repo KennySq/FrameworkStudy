@@ -1,13 +1,9 @@
-float FConduct(float4 LightDirection, float4 Normal, float n, float k, float cosi)
+float FConduct(float n, float k, float cosi)
 {
 	float Ret = 0.0f;
 	
 	float Perp = 0.0f;
-	float Parl = 0.0f;
-	
-    Normal = normalize(Normal);
-    LightDirection = normalize(LightDirection);
-	
+    float Parl = 0.0f;
 	
   //  cosi = abs(dot(LightDirection, Normal));
 	
@@ -19,7 +15,7 @@ float FConduct(float4 LightDirection, float4 Normal, float n, float k, float cos
 	
     Ret = (Parl + Perp) / 2.0f;
 	
-    return 1.0f - Ret;
+    return abs(Ret);
 }
 
 float FDielect(float4 LightDirection, float4 Normal,float4 Surface, float4 ViewPosition, float nt, float ni)

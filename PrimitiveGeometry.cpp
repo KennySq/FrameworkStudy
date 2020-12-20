@@ -107,3 +107,34 @@ HRESULT GenerateSphere(float radius, UINT sliceCount, UINT stackCount, Model * p
 
 	return Result;
 }
+
+HRESULT GenerateQuad(Model* pModel)
+{
+	Mesh<StaticVertex> m;
+
+	StaticVertex V[] = {
+		StaticVertex(-1.0f, -1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 0.0f, 0.0f),
+		StaticVertex(1.0f, -1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 1.0f, 0.0f),
+		StaticVertex(-1.0f, 1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 0.0f, 1.0f),
+		StaticVertex(1.0f, 1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 1.0f, 1.0f),
+	};
+
+	UINT I[] = { 0, 1, 2, 2,1,3 };
+
+	m.Vertices.emplace_back(V[0]);
+	m.Vertices.emplace_back(V[1]);
+	m.Vertices.emplace_back(V[2]);
+	m.Vertices.emplace_back(V[3]);
+
+	m.Indices.emplace_back(I[0]);
+	m.Indices.emplace_back(I[1]);
+	m.Indices.emplace_back(I[2]);
+	m.Indices.emplace_back(I[3]);
+	m.Indices.emplace_back(I[4]);
+	m.Indices.emplace_back(I[5]);
+
+	auto Result = CreateStaticMeshBuffer(m, pModel);
+	ResultLog(Result, "Creating Quad Mesh.");
+
+	return Result;
+}

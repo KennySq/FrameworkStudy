@@ -9,7 +9,7 @@ void SkullObject::Init()
 	static auto HW = D3DHardware::GetInstance();
 	static auto Memory = MemoryBank::GetInstance();
 
-	TRS->Translation(XMVectorSet(0.0f,-10.0f, 0.0f, 1.0f));
+	TRS->Translation(XMVectorSet(0.0f,-10.0f, 0.0f, 1.0f), true);
 
 	TRS->Rotate(XMVectorSet(0.0f, 0.0f, -90.0f, 1.0f));
 	TRS->Rotate(XMVectorSet(0.0f, 11.0f, 0.0f, 1.0f));
@@ -41,8 +41,8 @@ SkullObject::SkullObject()
 	MR = AddComponent<MeshRenderer>();
 	auto Memory = MemoryBank::GetInstance();
 
-	//LoadStaticModelFromFile("Assets/Skull/SkullV.obj", MR->RenderModel);
-	GenerateSphere(10.0f, 32, 64, MR->RenderModel);
+	LoadStaticModelFromFile("Assets/Skull/SkullV.obj", MR->RenderModel);
+	//GenerateSphere(10.0f, 32, 64, MR->RenderModel);
 
 	LoadCubemapFromDDS("Assets/Textures/SampleCubemap.dds", &Tex);
 

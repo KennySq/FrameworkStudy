@@ -94,11 +94,11 @@ public:
 		MaterialCache.emplace_back(Mat);
 	}
 
-	inline void AssignMaterialPass(string Path, string PassName)
+	inline void AssignMaterialPass(string Path, string PassName, int CompileFlag)
 	{
 		Material* Mat = new Material();
 
-		Mat->AddPass(Path, PassName);
+		Mat->AddPass(Path, PassName,CompileFlag);
 
 		MaterialCache.emplace_back(Mat);
 	}

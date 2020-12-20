@@ -198,6 +198,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="PrimitiveGeometry.h" />
+    <ClInclude Include="RenderableQuad.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
@@ -251,6 +252,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="PrimitiveGeometry.cpp" />
+    <ClCompile Include="RenderableQuad.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -299,6 +301,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\HLSLMath.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\VolumeTexture.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

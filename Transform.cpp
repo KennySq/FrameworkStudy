@@ -1,11 +1,21 @@
 #include"stdafx.h"
 #include"Transform.h"
 
-void Transform::Translation(XMVECTOR Vector)
+void Transform::Translation(XMVECTOR Vector, bool isLocal)
 {
 	auto Origin = XMLoadFloat4x4(&TRS);
+	
+	if (isLocal)
+	{
+		Origin *= XMMatrixTranspose(XMMatrixTranslationFromVector(Vector));
+	}
+	else
+	{
+		Origin.r[3].m128_f32[0] += Vector.m128_f32[0];
+		Origin.r[3].m128_f32[1] += Vector.m128_f32[1];
+		Origin.r[3].m128_f32[2] += Vector.m128_f32[2];
 
-	Origin *= XMMatrixTranspose(XMMatrixTranslationFromVector(Vector));
+	}
 	XMStoreFloat4x4(&TRS, Origin);
 
 	return;

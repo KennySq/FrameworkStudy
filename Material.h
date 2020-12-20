@@ -1,6 +1,6 @@
 #pragma once
 
-HRESULT CompilePassFromFile(string Path, string Entry, Pass* pPass);
+HRESULT CompilePassFromFile(string Path, string Entry, Pass* pPass, int CompileFlag);
 
 using namespace std;
 
@@ -11,10 +11,10 @@ struct Material
 {
 	map<string, Pass*> Passes;
 	
-	inline void AddPass(string Path, string PassName)
+	inline void AddPass(string Path, string PassName, int CompileFlag)
 	{
 		Pass* NewPass = new Pass();
-		auto Result = CompilePassFromFile(Path, PassName, NewPass);
+		auto Result = CompilePassFromFile(Path, PassName, NewPass, CompileFlag);
 
 		if (Result != S_OK)
 		{

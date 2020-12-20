@@ -86,18 +86,14 @@ float SpotDiffuse(SpotLight Light, float4 Position, float4 Normal)
 
 }
 
-float BlinnAnisotropic(float4 LightDir, float4 ViewDir, float4 Normal, float ex, float ey)
+float BlinnAnisotropic(float3 LightDir, float3 ViewDir, float3 Normal, float ex, float ey)
 {
-    float4 wi, wo;
-    wi = normalize(reflect(ViewDir, -Normal));
-    wo = normalize(reflect(LightDir, -Normal));
-    float4 wh = normalize(wi + wo);
+    float3 wi, wo;
+    wi = LightDir;
+    wo = ViewDir;
+    float3 wh = normalize(wi + wo);
     
-    float4 coswh = abs(cos(dot(-wh, Normal)));
-    float ViewLight = abs(dot(-wo, ViewDir));
-    float Diffuse = abs(dot(-wi, Normal));
-    
-    float Pi2 = 3.141592 * 2.0f;
+    float Pi2 = 3.141592f * 2.0f;
     
     float ndotwh = abs(dot(wh, Normal));
    // float D = ((Exp + 2) / (Pi2)) * pow(wh, Exp);
@@ -126,43 +122,50 @@ float Blinn(float4 LightDir, float4 ViewDir, float4 Normal, float Exp)
     return D;
 }
 
-float Torrance(float Diffuse, float4 Normal, float4 LightDir, float4 ViewPos, float4 Surface)
+float Torrance(float Diffuse, float3 Normal, float3 LightDir, float3 ViewDir, float Roughness)
 {
-    float Ret = 0.0f;
-    
-    float4 ViewDir = normalize(Surface - ViewPos);
+    float Specular = 0.0f;
     float Coso, Cosi;
     
-	Normal = -normalize(Normal);
+    Normal = Normal;
+    
+//	Normal.xyz = normalize(Normal.xyz);
+//    LightDir.xyz = normalize(-LightDir.xyz);
+  //  float4 wi = reflect(LightDir, Normal);
+  //  float4 wo = reflect(ViewDir, Normal); 
+    float3 wi = -LightDir;
+    float3 wo = -ViewDir;
     
     
-    float4 wi = (reflect(-LightDir, Normal));
-	float4 wo =    (reflect(ViewDir, Normal));
+    Coso = dot(wo, Normal);
+    Cosi = dot(wi, Normal);
     
-    Coso = abs(dot(wo, ViewDir));
-    Cosi = abs(dot(wi, -LightDir));
+    float3 wh = normalize(wi + wo);
     
+    float ndotwh = dot(wh, Normal);
+    float ndotwo = dot(wo, Normal);
+    float ndotwi = dot(wi, Normal);
+    float whdotwi = dot(wi, wh);
     
-    float4 Wh = normalize(wi + wo);
+  //  float Fr = FConduct(LightDir, Normal, 3.212f, 3.3f, ndotwh); // Chrome fresnel
+    float Fr = FConduct(3.212f, 3.3f, ndotwh); // Chrome fresnel
     
-    
-    
-    float NdotWh = abs(dot(Wh, Normal));
-    float NdotWo = abs(dot(wo, Normal));
-    float NdotWi = abs(dot(wi, Normal));
-    float WhdotWi = abs(dot(wo, Wh));
-    
-    float Fr = FConduct(LightDir, Normal, 3.212f, 3.3f, Coso);
+    float min1 = (2.0f * ndotwh * ndotwo / whdotwi);
+    float min2 = (2.0f * ndotwh * ndotwi / whdotwi);
     
     
-    float min1 = (2.0f * NdotWh * NdotWo) / (WhdotWi);
-    float min2 = (2.0f * NdotWh * NdotWi) / (WhdotWi);
+    float ndotwhsq = ndotwh * ndotwh;
+    float ndotwhqd = ndotwhsq * ndotwhsq;
     
-    float Roughness = min(1.0f, min(min1, min2));
+    float Roughsq = saturate(Roughness * Roughness + 0.01f);
+    float R = 1.0f / (4.0f * Roughsq * ndotwhqd);
+    R *= exp((ndotwhsq - 1) / (ndotwhsq * Roughsq));
     
-    Ret = (Roughness * Fr * NdotWh) / (4.0f * Coso * Cosi);
+    float G = min(1.0f, min(min1, min2));
     
-	return Ret;
+    Specular = (G * Fr * R * ndotwh) / (4.0f * Coso * Cosi);
+    
+    return Specular;
 }
 
 float4 SamplePS(VTP Input) : SV_Target0
@@ -170,21 +173,24 @@ float4 SamplePS(VTP Input) : SV_Target0
     float4 Color;
     
     float4 Gold = float4(0.9f, 0.7f, 0.01f, 1.0f);
+    float3 LightDir;
     float Diffuse = 0.0f;
+    float Coso = 0.0f;
     
-    float4 ViewDir = normalize(Input.WorldPosition - ViewPosition);
+    const float Roughness = 0.5f;
+    
+    float3 ViewDir = normalize(Input.Normal.xyz - ViewPosition.xyz);
+    float3 Normal = normalize(Input.Normal.xyz);
+    
+    
     
     for (unsigned int i = 0; i < DirectionalCount; i++)
     {
-        Diffuse += BlinnAnisotropic(float4(DirectionalLights[i].Direction, 1.0f), ViewDir, Input.Normal,100.0f,1.0f);
-        Diffuse += Torrance(Diffuse, Input.Normal, float4(DirectionalLights[i].Direction, 1.0f), ViewPosition, Input.WorldPosition);
+        LightDir = normalize(DirectionalLights[i].Direction.xyz);
+       // Diffuse += BlinnAnisotropic(LightDir, ViewDir, Normal,1.0f,1.0f);
+        Diffuse += Torrance(Diffuse, Normal, LightDir, ViewDir, Roughness);
+
         
-        //float Fr = FDielect(float4(DirectionalLights[i].Direction, 1.0f), Input.Normal, Input.WorldPosition, ViewPosition, 1.0f, 3.6f);
-        //float Fr = FConduct(float4(DirectionalLights[i].Direction, 1.0f), Input.Normal, 3.212f, 3.3f);
-        
-        //Fr = saturate(Fr);
-        
-     //   Diffuse += Fr;
         
 
     }
@@ -196,9 +202,10 @@ float4 SamplePS(VTP Input) : SV_Target0
     //                        Input.Normal, Input.WorldPosition, 1.0f, 1.0f);
 
     }
-    float4 Ref = reflect(normalize(ViewDir), normalize(Input.Normal));
+    float3 Ref = reflect(normalize(ViewDir), Normal);
     float4 Cube = Cubemap.Sample(DefaultSampler, Ref.xyz);
     float4 Ambient = float4(0.05f, 0.05f, 0.05f,1.0f);
     float4 Albedo = float4(0.3f, 0.3f, 0.3f, 1.0f);
-    return (Diffuse.xxxx +Albedo) * Cube;
+   // return (Cube);
+    return (float4(Diffuse.xxx, 1.0f)) * (Cube * (1.0f - Roughness)) * Gold;
 }
