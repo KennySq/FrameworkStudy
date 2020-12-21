@@ -8,7 +8,7 @@ class RenderableQuad :
 
     UATexture3D* QuadTex = nullptr;
 
-    ComputeObject CO;
+    ComputeObject* CO;
 
 public:
     RenderableQuad();

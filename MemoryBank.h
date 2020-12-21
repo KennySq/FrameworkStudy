@@ -10,6 +10,8 @@ private:
 	unordered_map<size_t, string> StringMap;
 	unordered_map<size_t, Scene*> SceneMap;
 	unordered_map<size_t, string> ComponentMap;
+	unordered_map<size_t, ComputeObject*> ComputeCache;
+
 
 	vector<Material*> MaterialCache;
 
@@ -94,6 +96,16 @@ public:
 		MaterialCache.emplace_back(Mat);
 	}
 
+	inline void AssignComputeObject(string Path, string PassName)
+	{
+		ComputeObject* CO = new ComputeObject();
+
+		auto Result = CompileComputeShaderFromFile(Path, PassName, CO);
+		ResultLog(Result, "Compile Compute Shader.");
+
+		ComputeCache.insert_or_assign(make_hash(PassName), CO);
+	}
+
 	inline void AssignMaterialPass(string Path, string PassName, int CompileFlag)
 	{
 		Material* Mat = new Material();
@@ -120,6 +132,17 @@ public:
 		{
 			if (m->Passes.find(PassName) != m->Passes.end())
 				return m;
+		}
+
+		return nullptr;
+	}
+
+	inline ComputeObject* const GetComputeObjectByPass(const char* PassName)
+	{
+		for (auto c : ComputeCache)
+		{
+			if (make_hash(string(PassName)) == c.first)
+				return c.second;
 		}
 
 		return nullptr;

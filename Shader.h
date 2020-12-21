@@ -17,6 +17,7 @@ struct Pass
 
 struct ComputeObject
 {
+	size_t Hash;
 	ComPtr<ID3D11ComputeShader> CS;
 	ComPtr<ID3D11UnorderedAccessView> RegisterU[8];
 

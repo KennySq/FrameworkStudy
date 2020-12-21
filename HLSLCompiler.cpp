@@ -157,5 +157,8 @@ HRESULT CompilePassFromFile(string Path, string Entry, Pass* pPass, int CompileF
 HRESULT CompileComputeShaderFromFile(string Path, string Entry, ComputeObject* pCO)
 {
 	auto Result = CompileCS(Path, Entry, pCO->CS.GetAddressOf());
+
+	pCO->Hash = make_hash(Entry);
+
 	return Result;
 }

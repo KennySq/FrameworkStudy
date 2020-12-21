@@ -28,7 +28,7 @@ bool Application::Init()
 
 	Memory->AssignMaterialPass("Assets/Shaders/SampleShader.hlsl", "Sample", FLAG_VS | FLAG_PS);
 	Memory->AssignMaterialPass("Assets/Shaders/Skybox.hlsl", "Skybox", FLAG_VS | FLAG_PS);
-	Memory->AssignMaterialPass("Assets/Shaders/VolumeTexture.hlsl", "VolumeTexture",FLAG_CS);
+	Memory->AssignComputeObject("Assets/Shaders/VolumeTexture.hlsl", "VolumeTexture");
 
 	if (!Hardware || !Renderer)
 		AssertCritical("Hardware or Renderer didn't initialized!", E_INVALIDARG);

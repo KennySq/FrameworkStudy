@@ -20,6 +20,7 @@ struct UATexture3D
 {
 	ComPtr<ID3D11Texture3D> RawTexture;
 	ComPtr<ID3D11UnorderedAccessView> UAV;
+	ComPtr<ID3D11RenderTargetView> RTV;
 	ComPtr<ID3D11ShaderResourceView> SRV;
 };
 
