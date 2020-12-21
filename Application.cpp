@@ -63,6 +63,7 @@ bool Application::Init()
 	SelectedScene->AddSpotLight(XMVectorSet(20.0f, 30.0f, 0.0f, 1.0f), 25.0f);
 	//SelectedScene->AddSpotLight(XMVectorSet(0.0f, 10.0f, 0.0f, 1.0f), 10.0f);
 
+
 	SelectedScene->AddDirectionalLight(
 		XMVector3Normalize(XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f) - XMVectorSet(30.0f, 30.0f, 30.0f, 1.0f)), 1.0f);
 

@@ -149,9 +149,13 @@ HRESULT CompilePassFromFile(string Path, string Entry, Pass* pPass, int CompileF
 	if (CompileFlag & FLAG_PS)
 		CompilePS(Path, Entry, pPass->PS.GetAddressOf());
 
-	if (CompileFlag & FLAG_CS)
-		CompileCS(Path, Entry, pPass->CS.GetAddressOf());
 
 
 	return S_OK;
+}
+
+HRESULT CompileComputeShaderFromFile(string Path, string Entry, ComputeObject* pCO)
+{
+	auto Result = CompileCS(Path, Entry, pCO->CS.GetAddressOf());
+	return Result;
 }

@@ -8,8 +8,7 @@ class RenderableQuad :
 
     UATexture3D* QuadTex = nullptr;
 
-    Material* Mat = nullptr;
-    Pass* CSPass = nullptr;
+    ComputeObject CO;
 
 public:
     RenderableQuad();
