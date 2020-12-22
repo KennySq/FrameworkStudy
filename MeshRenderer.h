@@ -3,11 +3,13 @@
 class Component;
 struct MeshRenderer : public Component
 {
-
+	ImmediateRenderer* IR = nullptr;
 	Model* RenderModel = nullptr; // None
 	std::vector<Material*> Materials;
 
 	Pass* CurrentPass = nullptr;
+	Pass* DeferredPass = nullptr;
+	Material* DeferredMat = nullptr;
 
 	vector<ID3D11RasterizerState*> RasterizerStates;
 

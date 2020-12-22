@@ -85,6 +85,12 @@ HRESULT CompileVS(string Path, string Entry, ID3D11VertexShader** ppVS, ID3D11In
 	auto Result = D3DCompileFromFile(A2W(Path.c_str()), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, (Entry + "VS").c_str(), "vs_5_0", Flag, 0, &VBlob, &ErrBlob);
 	ResultLog(Result, Path + " => Compiling HLSL file.");
 
+	if (Result != S_OK)
+	{
+		DebugLog(L_ERROR, (char*)ErrBlob->GetBufferPointer());
+		ErrBlob->Release();
+	}
+
 	Result = Device->CreateVertexShader(VBlob->GetBufferPointer(), VBlob->GetBufferSize(), nullptr, ppVS);
 	ResultLog(Result, Path + " => Creating a vertex shader.");
 

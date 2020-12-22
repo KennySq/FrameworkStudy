@@ -26,12 +26,14 @@ bool Application::Init()
 	Memory->RegisterComponent<Camera>();
 	Memory->RegisterComponent<Transform>();
 
-	Memory->AssignMaterialPass("Assets/Shaders/SampleShader.hlsl", "Sample", FLAG_VS | FLAG_PS);
-	Memory->AssignMaterialPass("Assets/Shaders/Skybox.hlsl", "Skybox", FLAG_VS | FLAG_PS);
-	Memory->AssignComputeObject("Assets/Shaders/VolumeTexture.hlsl", "VolumeTexture");
+	Memory->AssignMaterialPass("Assets/Shaders/Deferred.hlsl", "Deferred", FLAG_VS | FLAG_PS);
+	Memory->AssignMaterialPass("Assets/Shaders/SkullObject.hlsl", "SkullObject", FLAG_PS);
+	//Memory->AssignComputeObject("Assets/Shaders/VolumeTexture.hlsl", "VolumeTexture");
 
 	if (!Hardware || !Renderer)
 		AssertCritical("Hardware or Renderer didn't initialized!", E_INVALIDARG);
+
+	Renderer->GenerateGBuffers();
 
 	// Swapchain Buffer
 	Renderer->AddTexture2D(Renderer->GetBufferFromSwapChain());
@@ -57,7 +59,7 @@ bool Application::Init()
 	CameraInst->AddComponent<Camera>();
 
 	SelectedScene->AddInstance(new SkullObject());
-	SelectedScene->AddInstance(new RenderableQuad());
+	//SelectedScene->AddInstance(new RenderableQuad());
 //	SelectedScene->AddInstance(new Skybox());
 
 	SelectedScene->AddSpotLight(XMVectorSet(20.0f, 30.0f, 0.0f, 1.0f), 25.0f);
@@ -105,7 +107,7 @@ void Application::Update()
 	static auto Context = D3DHardware::GetInstance().GetContext();
 
 	AppTimer.Stop();
-	Renderer->SetRenderTarget(Renderer->GetTextures2D(), 1, Renderer->GetDepthStencils()[0]);
+	Renderer->SetRenderTarget(Renderer->GetTextures2D(), 1, nullptr);
 	Context->RSSetViewports(1, &Renderer->GetViewport(0));
 
 	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Black);

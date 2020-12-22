@@ -28,17 +28,17 @@ void RenderableQuad::Init()
 
 void RenderableQuad::Update(float Delta)
 {
-	auto Context = D3DHardware::GetInstance().GetContext();
-	auto CS = CO->CS.Get();
-	static ID3D11UnorderedAccessView* NullUAV[] = { nullptr };
+	//auto Context = D3DHardware::GetInstance().GetContext();
+	//auto CS = CO->CS.Get();
+	//static ID3D11UnorderedAccessView* NullUAV[] = { nullptr };
 
-	Context->CSSetShader(CS, nullptr, 0);
-	Context->CSSetUnorderedAccessViews(0, 1, CO->RegisterU[0].GetAddressOf(), nullptr);
+	//Context->CSSetShader(CS, nullptr, 0);
+	//Context->CSSetUnorderedAccessViews(0, 1, CO->RegisterU[0].GetAddressOf(), nullptr);
 
-	Context->Dispatch(32, 32, 32);
+	//Context->Dispatch(32, 32, 32);
 
-	DebugLog(L_NORMAL, "Renderable Quad, compute shader has been dispatched.");
-	Context->CSSetUnorderedAccessViews(0, 1, NullUAV, nullptr);
+	//DebugLog(L_NORMAL, "Renderable Quad, compute shader has been dispatched.");
+	//Context->CSSetUnorderedAccessViews(0, 1, NullUAV, nullptr);
 
 }
 

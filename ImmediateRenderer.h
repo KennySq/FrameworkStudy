@@ -9,6 +9,7 @@ private:
 	static shared_ptr<ImmediateRenderer> Instance;
 
 	vector<RTTexture2D*> Textures2D;
+	RTTexture2D* GBuffer;
 	vector<RTTexture3D*> Textures3D;
 	
 	vector<DSTexture2D*> Depths;
@@ -33,6 +34,10 @@ public:
 	void ClearDepthStencil(DSTexture2D* Target);
 
 	RTTexture2D* GetBufferFromSwapChain();
+	inline RTTexture2D* const GetGBuffer() { return GBuffer; }
+
+	HRESULT GenerateGBuffers();
+
 
 	inline void AddTexture2D(RTTexture2D* Texture)
 	{
@@ -57,6 +62,7 @@ public:
 
 		Depths.emplace_back(Texture);
 	}
+	
 
 	inline RTTexture2D** const GetTextures2D() { return Textures2D.data(); }
 	inline RTTexture3D** const GetTextures3D() { return Textures3D.data(); }

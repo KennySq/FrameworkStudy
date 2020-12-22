@@ -17,7 +17,7 @@ void SkullObject::Init()
 	static auto RSD = HW.GetRSDesc();
 	MR->AddRS(RSD);
 
-	MR->SetPass("Sample");
+	MR->SetPass("SkullObject");
 	MR->BindSRV(Tex.SRV.Get(), 0);
 }
 
@@ -46,8 +46,7 @@ SkullObject::SkullObject()
 
 	LoadCubemapFromDDS("Assets/Textures/SampleCubemap.dds", &Tex);
 
-
-	MR->Materials.emplace_back(Memory->GetMaterialByPass("Sample")); 
+	MR->Materials.emplace_back(Memory->GetMaterialByPass("SkullObject")); 
 }
 
 

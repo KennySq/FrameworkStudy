@@ -46,6 +46,12 @@
     <Filter Include="외부 파일\DirectXTK\헤더 파일">
       <UniqueIdentifier>{c7522431-9e55-4e7e-a1e5-1e3899fec229}</UniqueIdentifier>
     </Filter>
+    <Filter Include="리소스 파일\Shaders\Private">
+      <UniqueIdentifier>{5381c996-1af7-4844-ac56-26758b29706c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일\Shaders\Public">
+      <UniqueIdentifier>{825f96be-ae33-47db-83f6-0c02a01d3e79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -365,23 +371,32 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\SampleShader.hlsl">
-      <Filter>리소스 파일\Shaders</Filter>
-    </None>
-    <None Include="Light.hlsl">
-      <Filter>리소스 파일\Shaders</Filter>
-    </None>
-    <None Include="Assets\Shaders\Skybox.hlsl">
-      <Filter>리소스 파일\Shaders</Filter>
-    </None>
     <None Include="DirectXTK\inc\SimpleMath.inl">
       <Filter>외부 파일\DirectXTK\헤더 파일</Filter>
     </None>
     <None Include="Assets\Shaders\HLSLMath.hlsl">
-      <Filter>리소스 파일\Shaders</Filter>
+      <Filter>리소스 파일\Shaders\Private</Filter>
+    </None>
+    <None Include="Assets\Shaders\Deferred.hlsl">
+      <Filter>리소스 파일\Shaders\Private</Filter>
+    </None>
+    <None Include="Assets\Shaders\Forward.hlsl">
+      <Filter>리소스 파일\Shaders\Private</Filter>
     </None>
     <None Include="Assets\Shaders\VolumeTexture.hlsl">
-      <Filter>리소스 파일\Shaders</Filter>
+      <Filter>리소스 파일\Shaders\Private</Filter>
+    </None>
+    <None Include="Assets\Shaders\Skybox.hlsl">
+      <Filter>리소스 파일\Shaders\Public</Filter>
+    </None>
+    <None Include="Assets\Shaders\SkullObject.hlsl">
+      <Filter>리소스 파일\Shaders\Public</Filter>
+    </None>
+    <None Include="Assets\Shaders\ConstantBuffers.hlsli">
+      <Filter>리소스 파일\Shaders\Private</Filter>
+    </None>
+    <None Include="Assets\Shaders\Light.hlsli">
+      <Filter>리소스 파일\Shaders\Private</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -112,6 +112,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.1</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -176,6 +179,7 @@
     <ClInclude Include="DirectXTK\inc\XboxDDSTextureLoader.h" />
     <ClInclude Include="Hardware.h" />
     <ClInclude Include="HLSLCompiler.h" />
+    <None Include="Assets\Shaders\ConstantBuffers.hlsli" />
     <None Include="DirectXTK\inc\SimpleMath.inl" />
     <ClInclude Include="ImGuiPresets.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -277,20 +281,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\SampleShader.hlsl">
-      <FileType>Document</FileType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Light.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    <None Include="Assets\Shaders\Forward.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
@@ -306,6 +297,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\VolumeTexture.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\Deferred.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\SkullObject.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\Light.hlsli">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
