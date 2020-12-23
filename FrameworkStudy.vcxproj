@@ -201,6 +201,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="PrimitiveGeometry.h" />
+    <ClInclude Include="RenderableQuad.h" />
     <ClInclude Include="VolumeTexture.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -254,6 +255,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="PrimitiveGeometry.cpp" />
+    <ClCompile Include="RenderableQuad.cpp" />
     <ClCompile Include="VolumeTexture.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
