@@ -27,6 +27,7 @@ bool Application::Init()
 	Memory->RegisterComponent<Transform>();
 
 	Memory->AssignMaterialPass("Assets/Shaders/Deferred.hlsl", "Deferred", FLAG_VS | FLAG_PS);
+	Memory->AssignMaterialPass("Assets/Shaders/Deferred.hlsl", "Quad", FLAG_VS | FLAG_PS);
 	Memory->AssignMaterialPass("Assets/Shaders/SkullObject.hlsl", "SkullObject", FLAG_PS);
 	//Memory->AssignComputeObject("Assets/Shaders/VolumeTexture.hlsl", "VolumeTexture");
 
@@ -45,6 +46,10 @@ bool Application::Init()
 	// Clear Swapchain buffer
 	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Aqua);
 	Renderer->ClearDepthStencil(Renderer->GetDepthStencils()[0]);
+
+	Renderer->ClearGBuffer(Colors::Black);
+	Renderer->ClearDepthStencil(Renderer->GetGDepth());
+
 	Renderer->SetRenderTarget(Renderer->GetTextures2D(), 1, Renderer->GetDepthStencils()[0]);
 
 	Renderer->AddViewport(CD3D11_VIEWPORT(0.0f, 0.0f, Width, Height));
@@ -112,7 +117,11 @@ void Application::Update()
 
 	Renderer->ClearTexture(Renderer->GetTextures2D()[0], Colors::Black);
 	Renderer->ClearDepthStencil(Renderer->GetDepthStencils()[0]);
-	
+
+	Renderer->ClearGBuffer(Colors::Black);
+	Renderer->ClearDepthStencil(Renderer->GetGDepth());
+
+
 	Input->Frame();
 	
 	

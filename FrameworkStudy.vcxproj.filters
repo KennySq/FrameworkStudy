@@ -72,9 +72,6 @@
     <ClInclude Include="Instance.h">
       <Filter>헤더 파일\Private</Filter>
     </ClInclude>
-    <ClInclude Include="IRenderer.h">
-      <Filter>헤더 파일\Private</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryBank.h">
       <Filter>헤더 파일\Private</Filter>
     </ClInclude>
@@ -240,7 +237,7 @@
     <ClInclude Include="DirectXTK\inc\XboxDDSTextureLoader.h">
       <Filter>외부 파일\DirectXTK\헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="RenderableQuad.h">
+    <ClInclude Include="VolumeTexture.h">
       <Filter>헤더 파일\Public</Filter>
     </ClInclude>
   </ItemGroup>
@@ -258,9 +255,6 @@
       <Filter>소스 파일\Private</Filter>
     </ClCompile>
     <ClCompile Include="Instance.cpp">
-      <Filter>소스 파일\Private</Filter>
-    </ClCompile>
-    <ClCompile Include="IRenderer.cpp">
       <Filter>소스 파일\Private</Filter>
     </ClCompile>
     <ClCompile Include="MemoryBank.cpp">
@@ -353,7 +347,7 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>소스 파일\Public</Filter>
     </ClCompile>
-    <ClCompile Include="RenderableQuad.cpp">
+    <ClCompile Include="VolumeTexture.cpp">
       <Filter>소스 파일\Public</Filter>
     </ClCompile>
   </ItemGroup>

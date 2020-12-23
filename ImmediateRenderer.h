@@ -1,6 +1,8 @@
 #pragma once
 
-class ImmediateRenderer : IRenderer
+using namespace DirectX;
+
+class ImmediateRenderer
 {
 private:
 	ID3D11DeviceContext* Context;
@@ -9,7 +11,8 @@ private:
 	static shared_ptr<ImmediateRenderer> Instance;
 
 	vector<RTTexture2D*> Textures2D;
-	RTTexture2D* GBuffer;
+	vector<RTTexture2D*> GBuffer;
+	DSTexture2D* GDepth = nullptr;
 	vector<RTTexture3D*> Textures3D;
 	
 	vector<DSTexture2D*> Depths;
@@ -28,14 +31,25 @@ public:
 		}
 		return *Instance;
 	}
+	void ClearGBuffer(XMVECTORF32 ClearColor);
 	
-	
-	virtual void ClearTexture(RTTexture2D * Target, XMVECTORF32 ClearColor) override;
+	void ClearTexture(RTTexture2D* Target, XMVECTORF32 ClearColor);
 	void ClearDepthStencil(DSTexture2D* Target);
 
-	RTTexture2D* GetBufferFromSwapChain();
-	inline RTTexture2D* const GetGBuffer() { return GBuffer; }
+	void ClearTextureArray(RTTexture2DArray* Target, XMVECTORF32 ClearColor);
+	void ClearDepthStencilArray(DSTexture2DArray* Target);
 
+	void SetRenderTarget(RTTexture2D** Target, UINT Count, DSTexture2D* DepthStencil);
+	void SetRenderTargetArray(RTTexture2DArray* Target, UINT Count, DSTexture2D* DepthStencil);
+	void UnsetRenderTarget();
+
+	RTTexture2D* GetBufferFromSwapChain();
+	inline RTTexture2D** const GetGBuffer() { return GBuffer.data(); }
+	inline void GetGBufferAndCount(RTTexture2D** ppOutTex, UINT* pOutCount)
+	{
+		ppOutTex = GBuffer.data();
+		*pOutCount = GBuffer.size();
+	}
 	HRESULT GenerateGBuffers();
 
 
@@ -68,15 +82,11 @@ public:
 	inline RTTexture3D** const GetTextures3D() { return Textures3D.data(); }
 
 	inline DSTexture2D** const GetDepthStencils() { return Depths.data(); }
+	inline DSTexture2D* const GetGDepth() { return GDepth; }
 
 	inline void AddViewport(D3D11_VIEWPORT Viewport) { Viewports.emplace_back(Viewport); Context->RSSetViewports(Viewports.size(), Viewports.data()); }
 	inline void RemoveViewport(UINT Index) { Viewports.erase(Viewports.begin() + Index); }
 	inline D3D11_VIEWPORT& GetViewport(UINT Index) { if (Index >= 0 && Index < Viewports.size()) return Viewports[Index]; return Viewports[0]; }
 
 	inline void SwapFrame() { SwapChain->Present(0, 0); }
-
-
-	// IRenderer을(를) 통해 상속됨
-	virtual void SetRenderTarget(RTTexture2D ** Target, UINT Count, DSTexture2D* DepthStencil) override;
-	virtual void UnsetRenderTarget() override;
 };

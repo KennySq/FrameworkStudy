@@ -116,6 +116,12 @@ HRESULT CompileCS(string Path, string Entry, ID3D11ComputeShader** ppCS)
 	auto Result = D3DCompileFromFile(A2W(Path.c_str()), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, (Entry + "CS").c_str(), "cs_5_0", Flag, 0, &CBlob, &ErrBlob);
 	ResultLog(Result, Path + " => Compiling HLSL file.");
 
+	if (Result != S_OK)
+	{
+		DebugLog(L_ERROR, (char*)ErrBlob->GetBufferPointer());
+		ErrBlob->Release();
+	}
+
 	Result = Device->CreateComputeShader(CBlob->GetBufferPointer(), CBlob->GetBufferSize(), nullptr, ppCS);
 	ResultLog(Result, Path + " => Creating a compute shader.");
 
@@ -138,6 +144,12 @@ HRESULT CompilePS(string Path, string Entry, ID3D11PixelShader** ppPS)
 
 	auto Result = D3DCompileFromFile(A2W(Path.c_str()), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, (Entry + "PS").c_str(), "ps_5_0", Flag, 0, &PBlob, &ErrBlob);
 	ResultLog(Result, Path + " => Compiling HLSL file.");
+
+	if (Result != S_OK)
+	{
+		DebugLog(L_ERROR, (char*)ErrBlob->GetBufferPointer());
+		ErrBlob->Release();
+	}
 
 	Result = Device->CreatePixelShader(PBlob->GetBufferPointer(), PBlob->GetBufferSize(), nullptr, ppPS);
 	ResultLog(Result, Path + " => Creating a pixel shader.");

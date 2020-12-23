@@ -61,9 +61,6 @@
 
 #include"ResourceManager.h"
 
-// Interfaces
-#include"IRenderer.h"
-
 #include"ImmediateRenderer.h"
 
 // Primitives

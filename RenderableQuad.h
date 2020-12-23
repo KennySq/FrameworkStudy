@@ -3,20 +3,15 @@
 class RenderableQuad :
     public Instance
 {
-    MeshRenderer* MR = nullptr;
-    Transform* TRS = nullptr;
+    MeshRenderer* MR;
 
-    UATexture3D* QuadTex = nullptr;
-
-    ComputeObject* CO;
-
+    RTTexture2D** GBufferRef = nullptr;
+    UINT GBufferCount;
 public:
+
     RenderableQuad();
     ~RenderableQuad();
-
     virtual void Init() override;
     virtual void Update(float Delta) override;
-    virtual void Render(float Delta) override;
-    virtual void Release() override;
 };
 

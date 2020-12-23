@@ -1,6 +1,14 @@
 #pragma once
 
 class Component;
+
+enum RENDER_TYPE
+{
+	FORWARD,
+	DEFERRED,
+	SCREEN,
+};
+
 struct MeshRenderer : public Component
 {
 	ImmediateRenderer* IR = nullptr;
@@ -8,10 +16,26 @@ struct MeshRenderer : public Component
 	std::vector<Material*> Materials;
 
 	Pass* CurrentPass = nullptr;
+	Pass* ForwardPass = nullptr;
 	Pass* DeferredPass = nullptr;
+	Pass* ScreenPass = nullptr;
 	Material* DeferredMat = nullptr;
+	Material* ForwardMat = nullptr;
+	Material* ScreenMat = nullptr;
+
+	RENDER_TYPE RenderType = RENDER_TYPE::DEFERRED;
 
 	vector<ID3D11RasterizerState*> RasterizerStates;
+
+	inline void SetRenderType(int Type) { RenderType = (RENDER_TYPE)Type; }
+
+	inline void UnbindUAV()
+	{
+		static ID3D11UnorderedAccessView* UAV[] = { nullptr };
+		static auto Context = D3DHardware::GetInstance().GetContext();
+
+		Context->CSSetUnorderedAccessViews(0, 1, UAV, nullptr);
+	}
 
 	inline void BindUAV(ID3D11UnorderedAccessView* UAV, UINT Index)
 	{
@@ -24,15 +48,27 @@ struct MeshRenderer : public Component
 		CurrentPass->RegisterU[Index] = UAV;
 	}
 
+	inline void UnbindSRV()
+	{
+		static ID3D11ShaderResourceView* SRV[] = { nullptr };
+		static auto Context = D3DHardware::GetInstance().GetContext();
+
+		Context->PSSetShaderResources(0, 1, SRV);
+	}
+
 	inline void BindSRV(ID3D11ShaderResourceView* SRV, UINT Index)
 	{
+
 		if (!SRV)
 		{
 			DebugLog(L_WARNING, "The SRV is empty.");
 			return;
 		}
 
+		static auto Context = D3DHardware::GetInstance().GetContext();
+
 		CurrentPass->RegisterT[Index] = SRV;
+		Context->PSSetShaderResources(Index, 1, &SRV);
 	}
 
 	inline void SetModel(Model* const Source)
@@ -77,6 +113,10 @@ struct MeshRenderer : public Component
 
 		RasterizerStates.emplace_back(RS);
 	}
+
+	void Forward();
+	void Deferred();
+	void Screen();
 
 	MeshRenderer();
 

@@ -1,7 +1,7 @@
 #include"Deferred.hlsl"
 
 TextureCube Cubemap : register(t0);
-float4 SkullObjectPS(DeferredVTP Input ) : SV_Target0
+float4 SkullObjectPS(DeferredGTP Input ) : SV_Target0
 {
     float4 Color;
     
