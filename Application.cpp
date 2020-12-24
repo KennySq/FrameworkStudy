@@ -144,7 +144,7 @@ void Application::Update()
 
 void Application::Render()
 {
-
+	Renderer->DrawScreen();
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	Renderer->SwapFrame();

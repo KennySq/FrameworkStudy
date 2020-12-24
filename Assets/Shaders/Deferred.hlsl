@@ -78,12 +78,12 @@ float4 QuadPS(QuadVTP Input) : SV_Target0
     
     float3 LightDir;
     float3 ViewDir = normalize(SampleNormal - ViewPosition).xyz;
-    
     float Diffuse = 0.0f;
+    
     for (unsigned int i = 0; i < DirectionalCount; i++)
     {
         LightDir = normalize(DirectionalLights[i].Direction.xyz);
-       // Diffuse += BlinnAnisotropic(LightDir, ViewDir, Normal,1.0f,1.0f);
+        Diffuse += BlinnAnisotropic(LightDir, ViewDir, SampleNormal.xyz,10.0f,10.0f);
         Diffuse += Torrance(Diffuse, SampleNormal.xyz, LightDir, ViewDir, 0.5f);
     }
     

@@ -6,7 +6,6 @@ enum RENDER_TYPE
 {
 	FORWARD,
 	DEFERRED,
-	SCREEN,
 };
 
 struct MeshRenderer : public Component
@@ -18,10 +17,8 @@ struct MeshRenderer : public Component
 	Pass* CurrentPass = nullptr;
 	Pass* ForwardPass = nullptr;
 	Pass* DeferredPass = nullptr;
-	Pass* ScreenPass = nullptr;
 	Material* DeferredMat = nullptr;
 	Material* ForwardMat = nullptr;
-	Material* ScreenMat = nullptr;
 
 	RENDER_TYPE RenderType = RENDER_TYPE::DEFERRED;
 
@@ -114,9 +111,9 @@ struct MeshRenderer : public Component
 		RasterizerStates.emplace_back(RS);
 	}
 
-	void Forward();
-	void Deferred();
-	void Screen();
+	void Forward() = delete;
+	void Deferred() = delete;
+	void Screen() = delete;
 
 	MeshRenderer();
 

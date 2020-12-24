@@ -1,5 +1,5 @@
 #pragma once
-
+using namespace DirectX;
 struct Vertex
 {
 	XMFLOAT4 Position;

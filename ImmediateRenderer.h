@@ -9,6 +9,9 @@ private:
 	IDXGISwapChain* SwapChain;
 
 	static shared_ptr<ImmediateRenderer> Instance;
+	
+	Model* Screen = nullptr;
+	Pass* ScreenPass = nullptr;
 
 	vector<RTTexture2D*> Textures2D;
 	vector<RTTexture2D*> GBuffer;
@@ -18,6 +21,10 @@ private:
 	vector<DSTexture2D*> Depths;
 
 	vector<D3D11_VIEWPORT> Viewports;
+	vector<ComPtr<ID3D11RasterizerState>> RStates;
+
+	D3D11_RASTERIZER_DESC RasterizerDesc{};
+
 
 public:
 
@@ -28,6 +35,13 @@ public:
 			Instance = make_shared<ImmediateRenderer>();
 			Instance->Context = D3DHardware::GetInstance().GetContext();
 			Instance->SwapChain = D3DHardware::GetInstance().GetSwapChain();
+
+			Instance->RasterizerDesc = CD3D11_RASTERIZER_DESC();
+			Instance->RasterizerDesc.FillMode = D3D11_FILL_SOLID;
+			Instance->RasterizerDesc.CullMode = D3D11_CULL_BACK;
+			Instance->RasterizerDesc.DepthClipEnable = true;
+
+		
 		}
 		return *Instance;
 	}
@@ -42,6 +56,8 @@ public:
 	void SetRenderTarget(RTTexture2D** Target, UINT Count, DSTexture2D* DepthStencil);
 	void SetRenderTargetArray(RTTexture2DArray* Target, UINT Count, DSTexture2D* DepthStencil);
 	void UnsetRenderTarget();
+
+	void DrawScreen();
 
 	RTTexture2D* GetBufferFromSwapChain();
 	inline RTTexture2D** const GetGBuffer() { return GBuffer.data(); }
@@ -77,6 +93,21 @@ public:
 		Depths.emplace_back(Texture);
 	}
 	
+	auto GetRSDesc() { return RasterizerDesc; }
+
+	inline ID3D11RasterizerState* const GenerateRasterizerState(D3D11_RASTERIZER_DESC& RSDesc)
+	{
+		ComPtr<ID3D11RasterizerState> RS;
+		static auto Device = D3DHardware::GetInstance().GetDevice();
+
+		auto Result = Device->CreateRasterizerState(&RSDesc, RS.GetAddressOf());
+		ResultLog(Result, "Creating rasterizer state.");
+
+		RStates.emplace_back(RS);
+
+		return RStates[RStates.size() - 1].Get();
+
+	}
 
 	inline RTTexture2D** const GetTextures2D() { return Textures2D.data(); }
 	inline RTTexture3D** const GetTextures3D() { return Textures3D.data(); }

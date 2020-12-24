@@ -44,12 +44,24 @@ void ImmediateRenderer::ClearDepthStencilArray(DSTexture2DArray* Target)
 
 RTTexture2D* ImmediateRenderer::GetBufferFromSwapChain()
 {
+	auto Memory = MemoryBank::GetInstance();
 	RTTexture2D* Texture = new RTTexture2D();
+	Screen = new Model();
 
 	auto Result = SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D*), (void**)Texture->RawTexture.GetAddressOf());
 	ResultLog(Result, "SwapChain buffer");
 
 	GenerateRTVFromRTTexture2D(Texture->RawTexture.Get(), Texture->RTV.GetAddressOf());
+
+	GenerateQuad(Screen);
+	
+	auto Mat = Memory->GetMaterialByPass("Quad");
+	ScreenPass = Mat->Passes["Quad"];
+
+	auto RSDesc = GetRSDesc();
+	RSDesc.CullMode = D3D11_CULL_NONE;
+
+	RStates.emplace_back(GenerateRasterizerState(RSDesc));
 
 	return Texture;
 }
@@ -123,6 +135,42 @@ HRESULT ImmediateRenderer::GenerateGBuffers()
 	GDepth = DTex;
 
 	return Result;
+
+}
+
+void ImmediateRenderer::DrawScreen()
+{
+	static UINT Strides[] = { sizeof(StaticVertex) };
+	static UINT Offsets[] = { 0 };
+
+	static ID3D11RenderTargetView* GBufferRTV[8];
+	static ID3D11ShaderResourceView* GBufferSRV[8];
+	static ID3D11ShaderResourceView* NullSRV[] = { nullptr };
+
+	Context->VSSetShader(ScreenPass->VS.Get(), nullptr, 0);
+	Context->PSSetShader(ScreenPass->PS.Get(), nullptr, 0);
+	
+	Context->RSSetState(RStates[0].Get());
+
+	Context->IASetVertexBuffers(0, 1, Screen->VertexBuffer.GetAddressOf(), Strides, Offsets);
+	Context->IASetIndexBuffer(Screen->IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	Context->IASetInputLayout(ScreenPass->IL.Get());
+
+	for (UINT i = 0; i < GBuffer.size(); i++)
+	{
+		GBufferSRV[i] = GBuffer[i]->SRV.Get();
+		GBufferRTV[i] = GBuffer[i]->RTV.Get();
+
+	}
+
+	Context->PSSetShaderResources(0, GBuffer.size(), GBufferSRV);
+	Context->OMSetRenderTargets(1, Textures2D[0]->RTV.GetAddressOf(), nullptr);
+
+	Context->DrawIndexed(6, 0, 0);
+	
+
+	Context->PSSetShaderResources(0, 1, NullSRV);
+	UnsetRenderTarget();
 
 }
 

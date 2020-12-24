@@ -6,7 +6,7 @@ void SkullObject::Init()
 {
 	static auto TRS = GetComponent<Transform>();
 	MR = GetComponent<MeshRenderer>();
-	static auto HW = D3DHardware::GetInstance();
+	static auto IR = ImmediateRenderer::GetInstance();
 	static auto Memory = MemoryBank::GetInstance();
 
 	TRS->Translation(XMVectorSet(0.0f,-10.0f, 0.0f, 1.0f), true);
@@ -14,7 +14,7 @@ void SkullObject::Init()
 	TRS->Rotate(XMVectorSet(0.0f, 0.0f, -90.0f, 1.0f));
 	TRS->Rotate(XMVectorSet(0.0f, 11.0f, 0.0f, 1.0f));
 
-	static auto RSD = HW.GetRSDesc();
+	static auto RSD = IR.GetRSDesc();
 	MR->AddRS(RSD);
 
 	MR->SetPass("SkullObject");

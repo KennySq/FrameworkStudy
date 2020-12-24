@@ -10,8 +10,8 @@ void Skybox::Init()
 	static auto Memory = MemoryBank::GetInstance();
 	static auto HW = D3DHardware::GetInstance();
 	static auto Device = HW.GetDevice();
-
-	static auto RSD = HW.GetRSDesc();
+	static auto IR = ImmediateRenderer::GetInstance();
+	auto RSD = IR.GetRSDesc();
 
 	RSD.CullMode = D3D11_CULL_NONE;
 

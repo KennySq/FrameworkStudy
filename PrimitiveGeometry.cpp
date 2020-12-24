@@ -113,10 +113,10 @@ HRESULT GenerateQuad(Model* pModel)
 	Mesh<StaticVertex> m;
 
 	StaticVertex V[] = {
-		StaticVertex(-1.0f, -1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 0.0f, 0.0f),
-		StaticVertex(1.0f, -1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 1.0f, 0.0f),
-		StaticVertex(-1.0f, 1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 0.0f, 1.0f),
-		StaticVertex(1.0f, 1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 1.0f, 1.0f),
+		StaticVertex(-1.0f, -1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 0.0f, 1.0f),
+		StaticVertex(1.0f, -1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 1.0f, 1.0f),
+		StaticVertex(-1.0f, 1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 0.0f, 0.0f),
+		StaticVertex(1.0f, 1.0f, 0.0f, 1.0f,0.0f,0.0f,0.0f, 1.0f, 0.0f),
 	};
 
 	UINT I[] = { 0, 1, 2, 2,1,3 };

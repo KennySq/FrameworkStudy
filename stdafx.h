@@ -61,7 +61,6 @@
 
 #include"ResourceManager.h"
 
-#include"ImmediateRenderer.h"
 
 // Primitives
 #include"Mesh.h"
@@ -75,6 +74,7 @@
 
 #include"HLSLCompiler.h"
 
+#include"ImmediateRenderer.h"
 
 // Components
 #include"Component.h"
