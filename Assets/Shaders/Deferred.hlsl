@@ -10,6 +10,8 @@ struct Vertex
     float4 Position : POSITION0;
     float3 Normal : NORMAL0;
     float2 UV : TEXCOORD0;
+    
+
 };
 
 struct QuadVTP
@@ -35,6 +37,7 @@ struct DeferredGTP
     float4 Normal : TEXCOORD1;
     float4 UV : TEXCOORD2;
     float4 ViewPosition : TEXCOORD3;
+    float4 MaterialID : TEXCOORD4;
 };
 
 
@@ -46,6 +49,7 @@ struct DeferredPixel
     float4 ViewPosition : SV_Target2;
     float4 Normal : SV_Target3;
     float4 UV : SV_Target4;
+    float4 MaterialID : SV_Target5;
     
 };
 
@@ -54,6 +58,7 @@ Texture2D<float4> Buffer_WorldPosition : register(t1);
 Texture2D<float4> Buffer_ViewPosition : register(t2);
 Texture2D<float4> Buffer_Normal : register(t3);
 Texture2D<float4> Buffer_UV : register(t4);
+Texture2D<float4> Buffer_MaterialID : register(t5);
 
 QuadVTP QuadVS(Vertex Input)
 {
@@ -109,6 +114,8 @@ DeferredGTP DeferredVS(Vertex Input)
     
     Output.Normal = mul(Input.Normal, (float3x4) World);
     Output.UV = Input.UV.xyxy;
+    
+    //Output.MaterialID = Input.
     
     return Output;
 }

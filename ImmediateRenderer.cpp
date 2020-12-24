@@ -70,7 +70,7 @@ HRESULT ImmediateRenderer::GenerateGBuffers()
 {
 	auto HW = D3DHardware::GetInstance();
 	auto Device = HW.GetDevice();
-	const unsigned short GBufferCount = 5;
+	const unsigned short GBufferCount = 6;
 
 
 	DSTexture2D* DTex = new DSTexture2D();
