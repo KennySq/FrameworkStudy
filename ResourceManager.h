@@ -163,6 +163,7 @@ inline HRESULT CreateUnorderedAccessTexture3D(DXGI_FORMAT Format, int Bind, UINT
 	ResultLog(Result, "UATexture3D");
 
 	Result = GenerateUAVFromTexture3D(pTex->RawTexture.Get(), pTex->UAV.GetAddressOf());
+	//Result = GenerateRTVFromTexture3D(pTex->RawTexture.Get(), pTex->RTV.GetAddressOf());
 	Result = GenerateSRVFromTexture3D(pTex->RawTexture.Get(), pTex->SRV.GetAddressOf());
 
 	return Result;

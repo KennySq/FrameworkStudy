@@ -10,8 +10,6 @@ struct Vertex
     float4 Position : POSITION0;
     float3 Normal : NORMAL0;
     float2 UV : TEXCOORD0;
-    
-
 };
 
 struct QuadVTP
@@ -50,7 +48,6 @@ struct DeferredPixel
     float4 Normal : SV_Target3;
     float4 UV : SV_Target4;
     float4 MaterialID : SV_Target5;
-    
 };
 
 Texture2D<float4> Buffer_Proected : register(t0);
@@ -59,6 +56,8 @@ Texture2D<float4> Buffer_ViewPosition : register(t2);
 Texture2D<float4> Buffer_Normal : register(t3);
 Texture2D<float4> Buffer_UV : register(t4);
 Texture2D<float4> Buffer_MaterialID : register(t5);
+
+Texture3D Tex_Volume : register(t6);
 
 QuadVTP QuadVS(Vertex Input)
 {
@@ -71,15 +70,58 @@ QuadVTP QuadVS(Vertex Input)
     return Output;
 }
 
+float GetDist(float3 Point)
+{
+    float4 VolumePos = float4(0.0f, 1.0f, 6.0f, 1.0f);
+
+    float DistanceVolume = length(Point - VolumePos.xyz) - VolumePos.w;
+    float DistancePoint = Point.y;
+    float Distance = min(DistanceVolume, DistancePoint);
+    
+    return Distance;
+
+}
+
+float4 RayMarch(float2 UV,float3 ViewPos, float3 ViewDir, int Depth)
+{
+    float4 Sam;
+    
+    const uint MaxStep = 256;
+    
+    float SampleVolume = Tex_Volume.Load(int4(UV.xy, 0, 0), int3(0, 0, 0)).xxxx;
+    
+    float dO = 0.f;
+    float3 ro = ViewPos;
+    float3 rd = ViewDir;
+    
+    for (int i = 0; i < MaxStep;i++)
+    {
+        float3 Point = ro + rd * dO;
+        float dS = GetDist(Point);
+        dO += dS;
+        if (dO > 100.0f || dS < 0.01f)
+            break;
+
+    }
+    
+    return dO;
+}
+
 float4 QuadPS(QuadVTP Input) : SV_Target0
 {
     float4 DiffuseColor;
+    float2 UVOffset = float2(1.0f, 1.0f) / float2(800, 600);
     
-    float4 SampleProjected = Buffer_Proected.Sample(DefaultSampler, Input.UV);
-    float4 SampleWorldPosition = Buffer_WorldPosition.Sample(DefaultSampler, Input.UV);
-    float4 SampleViewPosition = Buffer_ViewPosition.Sample(DefaultSampler, Input.UV);
-    float4 SampleNormal = Buffer_Normal.Sample(DefaultSampler, Input.UV);
-    float4 SampleUV = Buffer_UV.Sample(DefaultSampler, Input.UV);
+    float2 AdjustedUV = Input.UV + UVOffset;
+    
+    float4 SampleProjected = Buffer_Proected.Sample(DefaultSampler, AdjustedUV);
+    float4 SampleWorldPosition = Buffer_WorldPosition.Sample(DefaultSampler, AdjustedUV);
+    float4 SampleViewPosition = Buffer_ViewPosition.Sample(DefaultSampler, AdjustedUV);
+    float4 SampleNormal = Buffer_Normal.Sample(DefaultSampler, AdjustedUV);
+    float4 SampleUV = Buffer_UV.Sample(DefaultSampler, AdjustedUV);
+    float4 SampleMaterialID = Buffer_MaterialID.Sample(DefaultSampler, AdjustedUV);
+    
+    float4 SampleVolumeTexture = Tex_Volume.Load(int4(AdjustedUV.xy, 0, 0), int3(0, 0, 0)).xxxx;
     
     float3 LightDir;
     float3 ViewDir = normalize(SampleNormal - ViewPosition).xyz;
@@ -92,9 +134,12 @@ float4 QuadPS(QuadVTP Input) : SV_Target0
         Diffuse += Torrance(Diffuse, SampleNormal.xyz, LightDir, ViewDir, 0.5f);
     }
     
+    float RM = RayMarch(AdjustedUV, ViewPosition.xyz, normalize(float3(AdjustedUV, 0.0f)), 1);
+   
     DiffuseColor = Diffuse.xxxx;
     
     return DiffuseColor;
+   // return float4(float3(AdjustedUV, 0.0f), 0.0f);
 }
 
 DeferredGTP DeferredVS(Vertex Input)
@@ -115,7 +160,7 @@ DeferredGTP DeferredVS(Vertex Input)
     Output.Normal = mul(Input.Normal, (float3x4) World);
     Output.UV = Input.UV.xyxy;
     
-    //Output.MaterialID = Input.
+    Output.MaterialID = MaterialID.xxxx;
     
     return Output;
 }
@@ -149,6 +194,6 @@ DeferredPixel DeferredPS(DeferredGTP Input)
     Output.UV = Input.UV;
     Output.ViewPosition= Input.ViewPosition;
     Output.WorldPosition = Input.WorldPosition;
-    
+    Output.MaterialID = Input.MaterialID;
     return Output;
 }

@@ -45,6 +45,12 @@ public:
 		}
 		return *Instance;
 	}
+
+	inline void BindSRV(ID3D11ShaderResourceView** const SRV, UINT Index)
+	{
+		Context->PSSetShaderResources(Index, 1, SRV);
+	}
+
 	void ClearGBuffer(XMVECTORF32 ClearColor);
 	
 	void ClearTexture(RTTexture2D* Target, XMVECTORF32 ClearColor);

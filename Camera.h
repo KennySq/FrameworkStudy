@@ -9,6 +9,7 @@ struct CameraInfo
 
 class Camera : public Transform
 {
+	XMFLOAT4X4 TRS;
 	XMFLOAT4X4 Projection;
 	float FOV;
 	float AspectRatio;

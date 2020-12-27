@@ -1,29 +1,27 @@
 #pragma once
 
-struct InstanceData
-{
-	XMFLOAT4X4 WorldTransform;
-};
 
+struct InstanceData;
 struct Transform : Component
 {
 protected:
-	XMFLOAT4X4 TRS;
 
 	XMFLOAT4 Position;
 	XMFLOAT4 Rotation;
 	XMFLOAT4 Scale;
 
-	ComPtr<ID3D11Buffer> TRSBuffer;
+	ComPtr<ID3D11Buffer> InstanceBuffer;
+
+	InstanceData* Inst;
 
 public:
-	inline XMMATRIX const GetMatrix() { return XMLoadFloat4x4(&TRS); }
-	
+	Transform();
+	~Transform();
+
 	inline XMVECTOR const GetPosition() { return XMLoadFloat4(&Position); }
 	inline XMVECTOR const GetRotation() { return XMLoadFloat4(&Rotation); }
 	inline XMVECTOR const GetScale() { return XMLoadFloat4(&Scale); }
 
-	inline ID3D11Buffer* const GetBuffer() { return TRSBuffer.Get(); }
 
 	virtual void Translation(XMVECTOR Vector, bool isLocal);
 	virtual void Rotate(XMVECTOR Vector);

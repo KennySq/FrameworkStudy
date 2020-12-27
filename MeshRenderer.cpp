@@ -10,7 +10,6 @@ MeshRenderer::MeshRenderer()
 	DeferredMat = MB->GetMaterialByPass("Deferred");
 	DeferredPass = DeferredMat->Passes["Deferred"];
 
-	//ForwardMat = MB->GetMaterialByPass("Forward");
 }
 
 void MeshRenderer::Init()
@@ -29,7 +28,7 @@ void MeshRenderer::Update()
 	static auto Camera = RootScene->GetMainCamera();
 
 	static auto TransformComp = Root->GetComponent<Transform>();
-	static auto TRSBuffer = TransformComp->GetBuffer();
+	static auto InstanceBuffer = Root->GetBuffer();
 	static auto LightBuffer = RootScene->GetLightBuffer();
 	static auto CameraBuffer = Camera->GetBuffer();
 
@@ -40,7 +39,7 @@ void MeshRenderer::Update()
 	static UINT IndexCount;
 	static D3D11_TEXTURE2D_DESC GBufferDesc;
 
-	ID3D11Buffer* ConstantBuffers[] = { TRSBuffer, CameraBuffer.Get(), LightBuffer };
+	ID3D11Buffer* ConstantBuffers[] = { InstanceBuffer, CameraBuffer.Get(), LightBuffer };
 
 	static auto GBuffer = IR->GetGBuffer();
 

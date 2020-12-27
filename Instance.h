@@ -1,6 +1,15 @@
 #pragma once
 
 using namespace std;
+
+struct InstanceData
+{
+	XMFLOAT4X4 WorldTransform;
+	unsigned int MaterialID;
+	unsigned int Padding[3];
+
+};
+
 class Scene;
 class Instance
 {
@@ -11,8 +20,13 @@ private:
 	Scene* RootScene;
 	unordered_map<size_t, Component*> Components;
 
+	InstanceData InstData;
+	ComPtr<ID3D11Buffer> InstanceBuffer;
+	
 public:
 	inline unordered_map<size_t, Component*>& const GetAllComponents() { return Components; }
+
+	inline ID3D11Buffer* const GetBuffer() { return InstanceBuffer.Get(); }
 
 	inline void SetScene(Scene* const pScene) { RootScene = pScene; }
 	inline Scene* const GetScene() { return RootScene; }
@@ -22,6 +36,8 @@ public:
 
 	inline string& const GetName() { return Name; }
 	inline size_t const GetIID() { return IID; }
+
+	inline InstanceData& const GetInstanceData() { return InstData; }
 
 	template<class _Ty>
 	inline _Ty* AddComponent()

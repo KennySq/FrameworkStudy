@@ -4,6 +4,9 @@ cbuffer Instance : register(b0)
 {
     matrix World;
     
+    uint MaterialID;
+    uint3 InstancePadding;
+    
 };
 
 cbuffer Transform : register(b1)
@@ -20,6 +23,5 @@ cbuffer Scene : register(b2)
     
     uint DirectionalCount;
     uint SpotCount;
-    uint Padding;
-    uint Padding2;
+    uint2 ScenePadding;
 };

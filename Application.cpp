@@ -29,7 +29,7 @@ bool Application::Init()
 	Memory->AssignMaterialPass("Assets/Shaders/Deferred.hlsl", "Deferred", FLAG_VS | FLAG_PS);
 	Memory->AssignMaterialPass("Assets/Shaders/Deferred.hlsl", "Quad", FLAG_VS | FLAG_PS);
 	Memory->AssignMaterialPass("Assets/Shaders/SkullObject.hlsl", "SkullObject", FLAG_PS);
-	//Memory->AssignComputeObject("Assets/Shaders/VolumeTexture.hlsl", "VolumeTexture");
+	Memory->AssignComputeObject("Assets/Shaders/VolumeTexture.hlsl", "VolumeTexture");
 
 	if (!Hardware || !Renderer)
 		AssertCritical("Hardware or Renderer didn't initialized!", E_INVALIDARG);
@@ -63,8 +63,8 @@ bool Application::Init()
 
 	CameraInst->AddComponent<Camera>();
 
-	SelectedScene->AddInstance(new SkullObject());
-	//SelectedScene->AddInstance(new RenderableQuad());
+//	SelectedScene->AddInstance(new SkullObject());
+	SelectedScene->AddInstance(new VolumeTexture());
 //	SelectedScene->AddInstance(new Skybox());
 
 	SelectedScene->AddSpotLight(XMVectorSet(20.0f, 30.0f, 0.0f, 1.0f), 25.0f);

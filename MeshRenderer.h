@@ -15,6 +15,7 @@ struct MeshRenderer : public Component
 	std::vector<Material*> Materials;
 
 	Pass* CurrentPass = nullptr;
+
 	Pass* ForwardPass = nullptr;
 	Pass* DeferredPass = nullptr;
 	Material* DeferredMat = nullptr;

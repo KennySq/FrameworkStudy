@@ -20,10 +20,16 @@ struct ComputeObject
 	size_t Hash;
 	ComPtr<ID3D11ComputeShader> CS;
 	ComPtr<ID3D11UnorderedAccessView> RegisterU[8];
+	ComPtr<ID3D11ShaderResourceView> RegisterT[8];
 
 	inline void BindUAV(ID3D11UnorderedAccessView* UAV, UINT Index)
 	{
 		RegisterU[Index] = UAV;
+	}
+
+	inline void BindSRV(ID3D11ShaderResourceView* RTV, UINT Index)
+	{
+		RegisterT[Index] = RTV;
 	}
 
 };

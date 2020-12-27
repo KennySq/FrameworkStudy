@@ -19,6 +19,9 @@ void SkullObject::Init()
 
 	MR->SetPass("SkullObject");
 	MR->BindSRV(Tex.SRV.Get(), 0);
+
+	
+
 }
 
 void SkullObject::Update(float Delta)

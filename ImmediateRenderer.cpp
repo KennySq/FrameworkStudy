@@ -155,7 +155,7 @@ void ImmediateRenderer::DrawScreen()
 	Context->IASetVertexBuffers(0, 1, Screen->VertexBuffer.GetAddressOf(), Strides, Offsets);
 	Context->IASetIndexBuffer(Screen->IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	Context->IASetInputLayout(ScreenPass->IL.Get());
-
+	Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	for (UINT i = 0; i < GBuffer.size(); i++)
 	{
 		GBufferSRV[i] = GBuffer[i]->SRV.Get();
@@ -165,6 +165,7 @@ void ImmediateRenderer::DrawScreen()
 
 	Context->PSSetShaderResources(0, GBuffer.size(), GBufferSRV);
 	Context->OMSetRenderTargets(1, Textures2D[0]->RTV.GetAddressOf(), nullptr);
+	
 
 	Context->DrawIndexed(6, 0, 0);
 	
